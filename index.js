@@ -31,6 +31,7 @@ app1.use(
 );
 app2.use(
   cors({
+   
     origin: "https://my-machine-store-dashboard.onrender.com",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
@@ -68,8 +69,8 @@ app1.use(cookieParser());
 //   api_key: process.env.API_KEY,
 //   api_secret: process.env.API_SECRET
 // });
-const PORT1 = process.env.PORT || 5000;
-const PORT2 = process.env.PORT || 5001;
+const PORT1 = process.env.PORT || 7000;
+const PORT2 = process.env.PORT || 7001;
 const CONNECTION_URL = process.env.DATABASE;
 
 
