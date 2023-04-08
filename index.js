@@ -69,7 +69,7 @@ app1.use(cookieParser());
 //   api_key: process.env.API_KEY,
 //   api_secret: process.env.API_SECRET
 // });
-const PORT1 = process.env.PORT || 7000;
+const PORT1 = process.env.PORT || 5000;
 const PORT2 = process.env.PORT || 7001;
 const CONNECTION_URL = process.env.DATABASE;
 
@@ -85,11 +85,11 @@ mongoose
         console.log(`server running on ${PORT1}`);
       });
     }
-    if (app2) {
-      app2.listen(PORT2, () => {
-        console.log(`server running on ${PORT2}`);
-      });
-    }
+    // if (app2) {
+    //   app2.listen(PORT2, () => {
+    //     console.log(`server running on ${PORT2}`);
+    //   });
+    // }
   })
   .catch((error) => {
     console.log(error.message);
