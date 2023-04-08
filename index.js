@@ -24,14 +24,14 @@ app2.use(express.urlencoded({ extended: true }));
 
 app1.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://my-machine-store-0l73.onrender.com",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
 );
 app2.use(
   cors({
-    origin: "http://localhost:3001",
+    origin: "https://my-machine-store-dashboard.onrender.com",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
