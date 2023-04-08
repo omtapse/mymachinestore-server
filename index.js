@@ -86,11 +86,11 @@ mongoose
         console.log(`server running on ${PORT1}`);
       });
     }
-    if (app2) {
-      app2.listen(PORT2, () => {
-        console.log(`server running on ${PORT2}`);
-      });
-    }
+    // if (app2) {
+    //   app2.listen(PORT2, () => {
+    //     console.log(`server running on ${PORT2}`);
+    //   });
+    // }
   })
   .catch((error) => {
     console.log(error.message);
