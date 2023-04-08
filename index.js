@@ -33,6 +33,7 @@ app2.use(
   cors({
    
     origin: "https://my-machine-store-dashboard.onrender.com",
+    // origin: "http://localhost:3001",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
@@ -85,11 +86,11 @@ mongoose
         console.log(`server running on ${PORT1}`);
       });
     }
-    // if (app2) {
-    //   app2.listen(PORT2, () => {
-    //     console.log(`server running on ${PORT2}`);
-    //   });
-    // }
+    if (app2) {
+      app2.listen(PORT2, () => {
+        console.log(`server running on ${PORT2}`);
+      });
+    }
   })
   .catch((error) => {
     console.log(error.message);
