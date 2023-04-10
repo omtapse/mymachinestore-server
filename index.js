@@ -3,6 +3,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 // import http from "http"
 const http = require('http');
+const https = require('https');
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import routes from "./routes/routes.js";
@@ -15,10 +16,13 @@ import bodyParser from "body-parser";
 import fs from "fs";
 import addProduct from "./modale/addProduct.js";
 import adminDetail from "./modale/adminDetail.js";
-// import crypto from "crypto"
+// import crypto from "crypto"-
 // const key=crypto.randomBytes(64).toString('hex');
 // console.log("key===>",key)
 dotenv.config({ path: "./config.env" });
+// const privateKey  = fs.readFileSync('certificates/key.pem', 'utf8');
+// const certificate = fs.readFileSync('certificates/cert.pem', 'utf8');
+// const credentials = {key: privateKey, cert: certificate};
 const app1 = express();
 const app2 = express();
  const server1 = http.createServer(app1);
@@ -27,6 +31,7 @@ app1.use(express.json({ extended: true }));
 app2.use(express.json({ extended: true }));
 app1.use(express.urlencoded({ extended: true }));
 app2.use(express.urlencoded({ extended: true }));
+
 
 app1.use(
   cors({
@@ -49,12 +54,12 @@ app2.use(
 
  
 
-app1.get("/", (req, res) => {
-  return res.end("This is the Trade Enquiry api");
-});
-app2.get("/", (req, res) => {
-  return res.end("This is the Trade Enquiry api");
-});
+// app1.get("/", (req, res) => {
+//   return res.send("This is the Trade Enquiry api");
+// });
+// app2.get("/", (req, res) => {
+//   return res.send("This is the Trade Enquiry api");
+// });
 app1.use("/enquiry", routes);
 app2.use("/enquiry", routes);
 // const storage=multer.diskStorage({
@@ -91,12 +96,12 @@ mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     if (app1) {
-      server1.listen(PORT1, () => {
+      app1.listen(PORT1, () => {
         console.log(`server running on ${PORT1}`);
       });
     }
     if (app2) {
-      server2.listen(PORT2, () => {
+      app2.listen(PORT2, () => {
         console.log(`server running on ${PORT2}`);
       });
     }
