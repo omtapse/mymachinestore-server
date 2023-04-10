@@ -1,4 +1,8 @@
 import express from "express";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+// import http from "http"
+const http = require('http');
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import routes from "./routes/routes.js";
@@ -17,6 +21,8 @@ import adminDetail from "./modale/adminDetail.js";
 dotenv.config({ path: "./config.env" });
 const app1 = express();
 const app2 = express();
+ const server1 = http.createServer(app1);
+ const server2 = http.createServer(app2);
 app1.use(express.json({ extended: true }));
 app2.use(express.json({ extended: true }));
 app1.use(express.urlencoded({ extended: true }));
@@ -40,12 +46,14 @@ app2.use(
 );
 
 
-app1.get("/", (req, res) => {
-  return res.send("This is the Trade Enquiry api");
-});
-app2.get("/", (req, res) => {
-  return res.send("This is the Trade Enquiry api");
-});
+ 
+
+// app1.get("/", (req, res) => {
+//   return res.send("This is the Trade Enquiry api");
+// });
+// app2.get("/", (req, res) => {
+//   return res.send("This is the Trade Enquiry api");
+// });
 app1.use("/enquiry", routes);
 app2.use("/enquiry", routes);
 // const storage=multer.diskStorage({
@@ -71,7 +79,7 @@ app1.use(cookieParser());
 //   api_secret: process.env.API_SECRET
 // });
 const PORT1 = process.env.PORT || 5000;
-const PORT2 = process.env.PORT || 7001;
+const PORT2 = process.env.PORT || 5001;
 const CONNECTION_URL = process.env.DATABASE;
 
 
@@ -86,11 +94,11 @@ mongoose
         console.log(`server running on ${PORT1}`);
       });
     }
-    // if (app2) {
-    //   app2.listen(PORT2, () => {
-    //     console.log(`server running on ${PORT2}`);
-    //   });
-    // }
+    if (app2) {
+      app2.listen(PORT2, () => {
+        console.log(`server running on ${PORT2}`);
+      });
+    }
   })
   .catch((error) => {
     console.log(error.message);
