@@ -3,7 +3,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 // import http from "http"
 const http = require('http');
-const https = require('https');
+
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import routes from "./routes/routes.js";
@@ -25,8 +25,8 @@ dotenv.config({ path: "./config.env" });
 // const credentials = {key: privateKey, cert: certificate};
 const app1 = express();
 const app2 = express();
- const server1 = http.createServer();
- const server2 = http.createServer();
+const server1 = http.createServer(app1);
+// const server2 = http.createServer(app2);
 app1.use(express.json({ extended: true }));
 app2.use(express.json({ extended: true }));
 app1.use(express.urlencoded({ extended: true }));
@@ -54,12 +54,7 @@ app2.use(
 
  
 
-// app1.get("/", (req, res) => {
-//   return res.send("This is the Trade Enquiry api");
-// });
-// app2.get("/", (req, res) => {
-//   return res.send("This is the Trade Enquiry api");
-// });
+
 app1.use("/enquiry", routes);
 app2.use("/enquiry", routes);
 // const storage=multer.diskStorage({
@@ -76,9 +71,9 @@ app2.use(bodyParser.json());
 app2.use("/uploads", express.static("uploads"));
 app2.use("/logo", express.static("logo"));
 // app2.use(multer().any())
-
-app2.use(cookieParser());
 app1.use(cookieParser());
+app2.use(cookieParser());
+
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
 //   api_key: process.env.API_KEY,
@@ -95,8 +90,8 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    if (app1) {
-      app1.listen(PORT1, () => {
+    if (server1) {
+      server1.listen(PORT1, () => {
         console.log(`server running on ${PORT1}`);
       });
     }
@@ -108,6 +103,13 @@ mongoose
   })
   .catch((error) => {
     console.log(error.message);
+  });
+
+  app1.get("/", (req, res) => {
+    return res.send("This is the Trade Enquiry api");
+  });
+  app2.get("/", (req, res) => {
+    return res.send("This is the Trade Enquiry api");
   });
 
   app1.get("/fetch", async (req, res) => {
