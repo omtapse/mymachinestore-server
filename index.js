@@ -30,7 +30,8 @@ app2.use(express.urlencoded({ extended: true }));
 
 app1.use(
   cors({
-    origin: "https://my-machine-store-0l73.onrender.com",
+    // origin: "https://my-machine-store-0l73.onrender.com",
+      origin: "http://localhost:3000",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
@@ -49,10 +50,10 @@ app2.use(
  
 
 app1.get("/", (req, res) => {
-  return res.send("This is the Trade Enquiry api");
+  return res.end("This is the Trade Enquiry api");
 });
 app2.get("/", (req, res) => {
-  return res.send("This is the Trade Enquiry api");
+  return res.end("This is the Trade Enquiry api");
 });
 app1.use("/enquiry", routes);
 app2.use("/enquiry", routes);
@@ -89,13 +90,13 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    if (server1) {
-      server1.listen(PORT1, () => {
+    if (app1) {
+      app1.listen(PORT1, () => {
         console.log(`server running on ${PORT1}`);
       });
     }
-    if (server2) {
-      server2.listen(PORT2, () => {
+    if (app2) {
+      app2.listen(PORT2, () => {
         console.log(`server running on ${PORT2}`);
       });
     }
