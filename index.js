@@ -26,7 +26,7 @@ dotenv.config({ path: "./config.env" });
 const app1 = express();
 const app2 = express();
 const server1 = http.createServer(app1);
-// const server2 = http.createServer(app2);
+const server2 = http.createServer(app2);
 app1.use(express.json({ extended: true }));
 app2.use(express.json({ extended: true }));
 app1.use(express.urlencoded({ extended: true }));
@@ -95,8 +95,8 @@ mongoose
         console.log(`server running on ${PORT1}`);
       });
     }
-    if (app2) {
-      app2.listen(PORT2, () => {
+    if (server2) {
+      server2.listen(PORT2, () => {
         console.log(`server running on ${PORT2}`);
       });
     }
