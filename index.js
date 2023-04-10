@@ -109,9 +109,7 @@ mongoose
     console.log(error.message);
   });
 
-  wsServer.on('connection', (socket) => {
-    console.log('WebSocket client connected' , socket);
-  });
+
 
   app1.get("/", (req, res) => {
     return res.send("This is the Trade Enquiry api");
