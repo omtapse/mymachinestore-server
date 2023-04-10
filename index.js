@@ -48,12 +48,12 @@ app2.use(
 
  
 
-// app1.get("/", (req, res) => {
-//   return res.send("This is the Trade Enquiry api");
-// });
-// app2.get("/", (req, res) => {
-//   return res.send("This is the Trade Enquiry api");
-// });
+app1.get("/", (req, res) => {
+  return res.send("This is the Trade Enquiry api");
+});
+app2.get("/", (req, res) => {
+  return res.send("This is the Trade Enquiry api");
+});
 app1.use("/enquiry", routes);
 app2.use("/enquiry", routes);
 // const storage=multer.diskStorage({
@@ -89,12 +89,12 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    if (app1) {
+    if (server1) {
       app1.listen(PORT1, () => {
         console.log(`server running on ${PORT1}`);
       });
     }
-    if (app2) {
+    if (server2) {
       app2.listen(PORT2, () => {
         console.log(`server running on ${PORT2}`);
       });
