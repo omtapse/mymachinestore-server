@@ -1,8 +1,8 @@
 import express from "express";
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
+// import { createRequire } from "module";
+// const require = createRequire(import.meta.url);
 // import http from "http"
-const http = require('http');
+// const http = require('http');
 
 
 import mongoose from "mongoose";
@@ -31,7 +31,7 @@ const CONNECTION_URL = process.env.DATABASE;
 
 const app1 = express();
 const app2 = express();
-const server1 = http.createServer(app1);
+// const server1 = http.createServer(app1);
 // const server2 = http.createServer(app2);
 // const wsServer = new WebSocket.Server({ port: PORT2 });
 app1.use(express.json({ extended: true }));
@@ -94,16 +94,16 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    if (server1) {
-      server1.listen(PORT1, () => {
+    if (app1) {
+      app1.listen(PORT1, () => {
         console.log(`server running on ${PORT1}`);
       });
     }
-    // if (server2) {
-    //   server2.listen(PORT2, () => {
-    //     console.log(`server running on ${PORT2}`);
-    //   });
-    // }
+    if (app2) {
+      app2.listen(PORT2, () => {
+        console.log(`server running on ${PORT2}`);
+      });
+    }
   })
   .catch((error) => {
     console.log(error.message);
