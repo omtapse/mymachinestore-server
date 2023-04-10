@@ -4,6 +4,7 @@ const require = createRequire(import.meta.url);
 // import http from "http"
 const http = require('http');
 
+
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import routes from "./routes/routes.js";
@@ -23,10 +24,16 @@ dotenv.config({ path: "./config.env" });
 // const privateKey  = fs.readFileSync('certificates/key.pem', 'utf8');
 // const certificate = fs.readFileSync('certificates/cert.pem', 'utf8');
 // const credentials = {key: privateKey, cert: certificate};
+
+const PORT1 = process.env.PORT || 5000;
+const PORT2 = process.env.PORT || 5001;
+const CONNECTION_URL = process.env.DATABASE;
+
 const app1 = express();
 const app2 = express();
 const server1 = http.createServer(app1);
-const server2 = http.createServer(app2);
+// const server2 = http.createServer(app2);
+// const wsServer = new WebSocket.Server({ port: PORT2 });
 app1.use(express.json({ extended: true }));
 app2.use(express.json({ extended: true }));
 app1.use(express.urlencoded({ extended: true }));
@@ -79,9 +86,6 @@ app2.use(cookieParser());
 //   api_key: process.env.API_KEY,
 //   api_secret: process.env.API_SECRET
 // });
-const PORT1 = process.env.PORT || 5000;
-const PORT2 = process.env.PORT || 5001;
-const CONNECTION_URL = process.env.DATABASE;
 
 
 
@@ -95,14 +99,18 @@ mongoose
         console.log(`server running on ${PORT1}`);
       });
     }
-    if (server2) {
-      server2.listen(PORT2, () => {
-        console.log(`server running on ${PORT2}`);
-      });
-    }
+    // if (server2) {
+    //   server2.listen(PORT2, () => {
+    //     console.log(`server running on ${PORT2}`);
+    //   });
+    // }
   })
   .catch((error) => {
     console.log(error.message);
+  });
+
+  wsServer.on('connection', (socket) => {
+    console.log('WebSocket client connected' , socket);
   });
 
   app1.get("/", (req, res) => {
