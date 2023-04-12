@@ -42,8 +42,8 @@ app2.use(express.urlencoded({ extended: true }));
 
 app1.use(
   cors({
-    // origin: "https://my-machine-store-0l73.onrender.com",
-      origin: "http://localhost:3000",
+    origin: "https://my-machine-store-0l73.onrender.com",
+      // origin: "http://localhost:3000",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
@@ -94,16 +94,17 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    // if (app1) {
-    //   app1.listen(PORT1, () => {
-    //     console.log(`server running on ${PORT1}`);
-    //   });
-    // }
-    if (app2) {
-      app2.listen(PORT2, () => {
-        console.log(`server running on ${PORT2}`);
+    if (app1) {
+      app1.listen(PORT1, () => {
+        console.log(`server running on ${PORT1}`);
       });
     }
+    // if (app2) {
+    //   app2.listen(PORT2, () => {
+    //     console.log(`server running on ${PORT2}`);
+    //   });
+    // }
+    
   })
   .catch((error) => {
     console.log(error.message);
