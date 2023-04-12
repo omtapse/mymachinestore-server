@@ -20,7 +20,7 @@ const newSchema = new userSchema({
   category: { type: String,  required: true },
   subCategory: { type: String,  },
   featured: { type: String, },
-  colour: { type: String },
+  colour: { type: String, require:true },
   manufacturerName: { type: String, required: true },
   metaDescription: { type: String },
   metaKey: { type: String },
@@ -30,6 +30,6 @@ const newSchema = new userSchema({
   supplier: { type: String },
   power: { type: String },
   weight: { type: String },
-  shortDiscription:{type:String}
+  shortDiscription:{type:String, require:true}
 });
 export default mongoose.model("addProduct", newSchema);

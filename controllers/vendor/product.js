@@ -28,7 +28,9 @@ export const addVendoProduct =
       position,
       supplier,
       power,
-      weight, } = req.body;
+      weight,
+      shortDiscription,
+     } = req.body;
     let img = req.file.path;
     console.log("img===>",img)
     try {
@@ -56,6 +58,7 @@ export const addVendoProduct =
         supplier:supplier,
         power:power,
         weight:weight,
+        shortDiscription:shortDiscription,
       });
       console.log("newUser===>", newUser);
       return res.status(200).json({ result: newUser });
