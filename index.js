@@ -94,16 +94,16 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    if (app1) {
-      app1.listen(PORT1, () => {
-        console.log(`server running on ${PORT1}`);
+    // if (app1) {
+    //   app1.listen(PORT1, () => {
+    //     console.log(`server running on ${PORT1}`);
+    //   });
+    }
+    if (app2) {
+      app2.listen(PORT2, () => {
+        console.log(`server running on ${PORT2}`);
       });
     }
-    // if (app2) {
-    //   app2.listen(PORT2, () => {
-    //     console.log(`server running on ${PORT2}`);
-    //   });
-    // }
   })
   .catch((error) => {
     console.log(error.message);
