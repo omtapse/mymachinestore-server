@@ -98,7 +98,7 @@ mongoose
     //   app1.listen(PORT1, () => {
     //     console.log(`server running on ${PORT1}`);
     //   });
-    }
+    // }
     if (app2) {
       app2.listen(PORT2, () => {
         console.log(`server running on ${PORT2}`);
