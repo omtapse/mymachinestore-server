@@ -22,6 +22,12 @@ export const approvedMail = async (req, res) => {
     type,
     userName,
     password,
+    machine,
+    customer,
+    employees,
+    engineer,
+
+
   } = req.body;
 
   try {
@@ -51,6 +57,11 @@ export const approvedMail = async (req, res) => {
       type: type,
       userName: userName,
       password: hashedPassword,
+      machine: machine,
+      customer:customer,
+      employees: employees,
+      engineer:engineer
+
     });
     // const token = jwt.sign({ email: newUser.email, id: newUser._id }, "test", {
     //   expiresIn: "1hr",

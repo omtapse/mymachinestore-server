@@ -17,6 +17,10 @@ const newSchema = new userSchema({
   type: { type: String },
   password: { type: String,require:true },
   userName: { type: String},
+  customer: {type: String, require:true},
+  machine: {type: String, require:true},
+  employees: {type: String, require:true},
+  engineer: {type: String, require:true},
   date: {
     type: Date,
     default: Date.now,
