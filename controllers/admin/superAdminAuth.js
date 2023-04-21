@@ -29,6 +29,7 @@ export const superAdminAuth = async (req, res) => {
   try {
     const existinguser = await superAdminAuthentication.findOne({
       email: email,
+      password: password
     });
 
     console.log("existinguser=====>", existinguser);

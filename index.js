@@ -43,6 +43,7 @@ app2.use(express.urlencoded({ extended: true }));
 app1.use(
   cors({
     // origin: "https://my-machine-store-0l73.onrender.com",
+    // origin : "http://localhost:3000",
       origin: "http://15.207.31.23:3000",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
@@ -50,9 +51,9 @@ app1.use(
 );
 app2.use(
   cors({
-   
+       origin: "http://localhost:3001",
     // origin: "https://my-machine-store-dashboard.onrender.com",
-    origin: "http://15.207.31.23:3001",
+    // origin: "http://15.207.31.23:3001",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
