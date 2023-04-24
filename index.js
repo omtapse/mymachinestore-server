@@ -51,7 +51,7 @@ app1.use(
 );
 app2.use(
   cors({
-      //  origin: "http://localhost:3001",
+       origin: "http://localhost:3001",
     // origin: "https://my-machine-store-dashboard.onrender.com",
     origin: "http://15.207.31.23:3001",
     credentials: true,
