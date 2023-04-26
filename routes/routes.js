@@ -42,38 +42,38 @@ import {
 // import {addVendoProduct,productList,superAdminProductList} from "../controllers/addVendoProduct.js"
 // import {vendorAdmin,superAdmin} from "../controllers/vendorAdmin.js"
 const routes = express.Router();
-if (process.env.NODE_ENV === 'production') {
-  var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, path.resolve(__dirname, 'build'))
-    },
-    filename: function (req, file, cb) {
-      // cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
-      cb(null, file.originalname);
-    }
-  })
-} else {
-  var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, path.resolve(__dirname, 'uploads'))
-    },
-    filename: function (req, file, cb) {
-      // cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
-      cb(null, file.originalname);
-    }
-  })
-}
-const upload = multer({ storage: storage });
-
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.originalname);
-//   },
-// });
+// if (process.env.NODE_ENV === 'production') {
+//   var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, path.resolve(__dirname, 'build'))
+//     },
+//     filename: function (req, file, cb) {
+//       // cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
+//       cb(null, file.originalname);
+//     }
+//   })
+// } else {
+//   var storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, path.resolve(__dirname, 'uploads'))
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
+//       cb(null, file.originalname);
+//     }
+//   })
+// }
 // const upload = multer({ storage: storage });
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 const logoStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "logo");

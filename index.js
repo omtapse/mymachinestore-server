@@ -76,13 +76,13 @@ app2.use("/enquiry", routes);
 // let upload=multer({storage:storage})
 app2.use(bodyParser.urlencoded({ extended: true }));
 app2.use(bodyParser.json());
-if (process.env.NODE_ENV === 'production') {
-  app2.use(express.static(path.resolve(__dirname, 'build')));
-} else {
-  app2.use(express.static('./public'));
-  app2.use("/uploads", express.static("uploads"));
-}
-// app2.use("/uploads", express.static("uploads"));
+// if (process.env.NODE_ENV === 'production') {
+//   app2.use(express.static(path.resolve(__dirname, 'build')));
+// } else {
+//   app2.use(express.static('./public'));
+//   app2.use("/uploads", express.static("uploads"));
+// }
+app2.use("/uploads", express.static("uploads"));
 app2.use("/logo", express.static("logo"));
 // app2.use(multer().any())
 app1.use(cookieParser());
