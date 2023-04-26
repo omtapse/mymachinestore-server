@@ -43,8 +43,8 @@ app2.use(express.urlencoded({ extended: true }));
 app1.use(
   cors({
     // origin: "https://my-machine-store-0l73.onrender.com",
-    // origin : "http://localhost:3000",
-      origin: "http://15.207.31.23:3000",
+    origin : "http://localhost:3000",
+      // origin: "http://15.207.31.23:3000",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
@@ -53,7 +53,7 @@ app2.use(
   cors({
        origin: "http://localhost:3001",
     // origin: "https://my-machine-store-dashboard.onrender.com",
-    origin: "http://15.207.31.23:3001",
+    // origin: "http://15.207.31.23:3001",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
@@ -76,7 +76,13 @@ app2.use("/enquiry", routes);
 // let upload=multer({storage:storage})
 app2.use(bodyParser.urlencoded({ extended: true }));
 app2.use(bodyParser.json());
-app2.use("/uploads", express.static("uploads"));
+if (process.env.NODE_ENV === 'production') {
+  app2.use(express.static(path.resolve(__dirname, 'build')));
+} else {
+  app2.use(express.static('./public'));
+  app2.use("/uploads", express.static("uploads"));
+}
+// app2.use("/uploads", express.static("uploads"));
 app2.use("/logo", express.static("logo"));
 // app2.use(multer().any())
 app1.use(cookieParser());
