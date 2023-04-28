@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer";
+// import multer from "multer";
 import fs from "fs";
 import {
   logOut,
@@ -31,6 +31,38 @@ import {
   latestTradeEnquiries,
   latestUserEnquiries,
 } from "../controllers/latest/latest.js";
+import { createRequire } from "module";
+import dotenv from "dotenv"
+import addProduct from "../modale/addProduct.js";
+dotenv.config({ path: "./config.env" });
+const require = createRequire(import.meta.url);
+// const { S3Client } = require('@aws-sdk/client-s3');
+const aws = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+// const addProduct = require("../modale/addProduct.js")
+
+// const User = require("../models/userModel");
+
+const s3 = new aws.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRETS_KEY,
+  region: process.env.AWS_REGION,
+});
+
+const upload = () =>
+  multer({
+    storage: multerS3({
+      s3,
+      bucket: "mymachinestore",
+      metadata: function (req, file, cb) {
+        cb(null, { fieldName: file.originalname});
+      },
+      key: function (req, file, cb) {
+        cb(null, `image-${Date.now()}.jpeg`);
+      },
+    }),
+  });
 // import { enquiryDetail } from "../controllers/enquiry.js";
 // import { admin } from "../controllers/admin.js";
 // import { edit } from "../controllers/edit.js";
@@ -65,15 +97,15 @@ const routes = express.Router();
 // }
 // const upload = multer({ storage: storage });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-const upload = multer({ storage: storage });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
+// const upload = multer({ storage: storage });
 const logoStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "logo");
@@ -108,7 +140,24 @@ routes.post("/approvedMail", logo.single("logo"),  approvedMail);
 routes.post("/mail", mail);
 routes.post("/vendorAdminLogIN", vendorAuth);
 // routes.post("/addProduct", vendorAuthrisation, addVendoProduct);
-routes.post("/addProduct", upload.single("image"), addVendoProduct);
+routes.post("/addProduct", upload().single("image"), addVendoProduct);
+// routes.post("/addProduct", upload().single("image"), async (req, res) => {
+//   await addProduct.create({ image: req.file.location });
+
+// try {
+//   const imageUrl = await upload(req.file.location);
+//   const addproduct = new addProduct({
+//     image: imageUrl
+//   });
+//   const savedImage = await addProduct.save();
+//   res.send(imageUrl);
+// } catch (error) {
+//   console.log(error);
+//   res.status(500).json({ message: 'Internal server error' });
+// }
+// });
+
+
 // routes.get("/productList", vendorAuthrisation, productList);
 routes.get("/productList", productList);
 routes.get("/vendorList", authenticate, vendorList);

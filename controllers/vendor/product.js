@@ -31,7 +31,7 @@ export const addVendoProduct =
       weight,
       shortDiscription,
      } = req.body;
-    let img = req.file.path;
+    let img = req.file.location;
     console.log("img===>",img)
     try {
       const newUser = await addProduct.create({

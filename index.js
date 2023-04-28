@@ -1,8 +1,10 @@
 import express from "express";
-// import { createRequire } from "module";
-// const require = createRequire(import.meta.url);
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 // import http from "http"
-// const http = require('http');
+// const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 
 import mongoose from "mongoose";
@@ -11,12 +13,38 @@ import routes from "./routes/routes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
-import multer from "multer";
+// import multer from "multer";
 import cloudinary from "cloudinary";
 import bodyParser from "body-parser";
 import fs from "fs";
 import addProduct from "./modale/addProduct.js";
 import adminDetail from "./modale/adminDetail.js";
+import { dirname } from "path";
+// const aws = require("aws-sdk");
+// const multer = require("multer");
+// const multerS3 = require("multer-s3");
+
+// const User = require("../models/userModel");
+
+// const s3 = new aws.S3({
+//   accessKeyId: process.env.AWS_ACCESS_KEY,
+//   secretAccessKey: process.env.AWS_SECRETS_KEY,
+//   region: process.env.AWS_REGION,
+// });
+
+// const upload = (bucketName) =>
+//   multer({
+//     storage: multerS3({
+//       s3,
+//       bucket: bucketName,
+//       metadata: function (req, file, cb) {
+//         cb(null, { fieldName: file.fieldname });
+//       },
+//       key: function (req, file, cb) {
+//         cb(null, `image-${Date.now()}.jpeg`);
+//       },
+//     }),
+//   });
 // import crypto from "crypto"-
 // const key=crypto.randomBytes(64).toString('hex');
 // console.log("key===>",key)
@@ -82,6 +110,9 @@ app2.use(bodyParser.json());
 //   app2.use(express.static('./public'));
 //   app2.use("/uploads", express.static("uploads"));
 // }
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// app2.use("/uploads", express.static(__dirname + "/public"));
 app2.use("/uploads", express.static("uploads"));
 app2.use("/logo", express.static("logo"));
 // app2.use(multer().any())
