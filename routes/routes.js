@@ -15,7 +15,10 @@ import { mail } from "../controllers/mail/mail.js";
 import { enquiry, getUserEnquiry } from "../controllers/user/enquiry.js";
 import {
   addVendoProduct,
+  editVendoProduct,
+  updateProductById,
   productList,
+  getProductById,
   productDetail,
   superAdminProductList,
 } from "../controllers/vendor/product.js";
@@ -40,29 +43,44 @@ const require = createRequire(import.meta.url);
 const aws = require("aws-sdk");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.CLOUD_KEY, 
+  api_secret: process.env.CLOUD_KEY_SECRET 
+});
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'mymachinestore',
+    allowed_formats: ['jpg', 'png', 'jpeg']
+  }
+});
 // const addProduct = require("../modale/addProduct.js")
 
 // const User = require("../models/userModel");
 
-const s3 = new aws.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRETS_KEY,
-  region: process.env.AWS_REGION,
-});
+// const s3 = new aws.S3({
+//   accessKeyId: process.env.AWS_ACCESS_KEY,
+//   secretAccessKey: process.env.AWS_SECRETS_KEY,
+//   region: process.env.AWS_REGION,
+// });
 
-const upload = () =>
-  multer({
-    storage: multerS3({
-      s3,
-      bucket: "mymachinestore",
-      metadata: function (req, file, cb) {
-        cb(null, { fieldName: file.originalname});
-      },
-      key: function (req, file, cb) {
-        cb(null, `image-${Date.now()}.jpeg`);
-      },
-    }),
-  });
+// const upload = () =>
+//   multer({
+//     storage: multerS3({
+//       s3,
+//       bucket: "mymachinestore",
+//       metadata: function (req, file, cb) {
+//         cb(null, { fieldName: file.originalname});
+//       },
+//       key: function (req, file, cb) {
+//         cb(null, `image-${Date.now()}.jpeg`);
+//       },
+//     }),
+//   });
 // import { enquiryDetail } from "../controllers/enquiry.js";
 // import { admin } from "../controllers/admin.js";
 // import { edit } from "../controllers/edit.js";
@@ -95,7 +113,7 @@ const routes = express.Router();
 //     }
 //   })
 // }
-// const upload = multer({ storage: storage });
+const upload = multer({ storage: storage });
 
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
@@ -115,6 +133,19 @@ const logoStorage = multer.diskStorage({
   },
 });
 let logo = multer({ storage: logoStorage });
+
+// routes.put("/edit/:id", upload.single("image"), async(req, res, next) => {
+//   console.log(req.params);
+// try{
+//  const upadted= await addProduct.findByIdAndUpdate({ _id: req.params.id},req.body,{new:true});
+//    return res.status(200).json(upadted);
+//    next();
+//   .then((doc) => console.log(doc))
+// }catch (error) {
+//   console.log("error----->", error.message);
+//   return res.status(500).json("someting went wrong......");
+// }
+// });
 
 // routes.post("/detail", enquiryDetail);
 // routes.get("/admin", admin);
@@ -140,7 +171,9 @@ routes.post("/approvedMail", logo.single("logo"),  approvedMail);
 routes.post("/mail", mail);
 routes.post("/vendorAdminLogIN", vendorAuth);
 // routes.post("/addProduct", vendorAuthrisation, addVendoProduct);
-routes.post("/addProduct", upload().single("image"), addVendoProduct);
+routes.post("/addProduct", upload.single("image"), addVendoProduct);
+
+
 // routes.post("/addProduct", upload().single("image"), async (req, res) => {
 //   await addProduct.create({ image: req.file.location });
 
@@ -159,6 +192,9 @@ routes.post("/addProduct", upload().single("image"), addVendoProduct);
 
 
 // routes.get("/productList", vendorAuthrisation, productList);
+routes.get("/:id", getProductById)
+routes.put("/editProduct:id", updateProductById);
+// routes.put("/:id", updateProductById)
 routes.get("/productList", productList);
 routes.get("/vendorList", authenticate, vendorList);
 routes.get("/superAdminProductList", superAdminProductList);

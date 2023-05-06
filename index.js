@@ -49,6 +49,12 @@ import { dirname } from "path";
 // const key=crypto.randomBytes(64).toString('hex');
 // console.log("key===>",key)
 dotenv.config({ path: "./config.env" });
+// const cloudinary = require('cloudinary').v2;
+// cloudinary.config({ 
+//   cloud_name: process.env.CLOUD_NAME, 
+//   api_key: process.env.CLOUD_KEY, 
+//   api_secret: process.env.CLOUD_KEY_SECRET 
+// });
 // const privateKey  = fs.readFileSync('certificates/key.pem', 'utf8');
 // const certificate = fs.readFileSync('certificates/cert.pem', 'utf8');
 // const credentials = {key: privateKey, cert: certificate};
@@ -219,4 +225,35 @@ mongoose
       return res.status(500).json("someting went wrong......");
     }
   });
+
+  app2.delete("/delete/:id", (req, res) => {
+    console.log(req.params);
+    addProduct.findByIdAndDelete({ _id: req.params.id })
+      .then((doc) => console.log(doc))
+      .catch((err) => console.log(err));
+  });
+  // app2.put("/update/:id", (req, res, next) => {
+  //   console.log(req.params);
+  // try{
+  //  const upadted= addProduct.findByIdAndUpdate({ _id: req.params.id},req.body,{new:true});
+  //    res.status(200).json( upadted );
+  //    next();
+  //   .then((doc) => console.log(doc))
+  // }catch (error) {
+  //   console.log("error----->", error.message);
+  //   return res.status(500).json("someting went wrong......");
+  // }
+  // });
+  // app2.get("/editProduct/:id", async (req, res) => {
+  //   const _id = req.params.id
+  //   try {
+  //     const uidetail = await addProduct.findById({
+  //      _id
+  //     });
+  //     return res.status(200).json( uidetail );
+  //   } catch (error) {
+  //     console.log("error----->", error.message);
+  //     return res.status(500).json("someting went wrong......");
+  //   }
+  // });
   
