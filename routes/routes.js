@@ -192,8 +192,8 @@ routes.post("/addProduct", upload.single("image"), addVendoProduct);
 
 
 // routes.get("/productList", vendorAuthrisation, productList);
-routes.get("/:id", getProductById)
-routes.put("/editProduct:id", updateProductById);
+// routes.get("/:id", getProductById)
+// routes.put("/editProduct:id", updateProductById);
 // routes.put("/:id", updateProductById)
 routes.get("/productList", productList);
 routes.get("/vendorList", authenticate, vendorList);

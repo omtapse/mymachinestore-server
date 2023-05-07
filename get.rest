@@ -1,1 +1,1 @@
-GET http://localhost:5001/enquiry/editProduct/:644bd4eff142f01e1598b0b56
+GET http://localhost:5001/editProduct/644bd4eff142f01e1598b0b56
