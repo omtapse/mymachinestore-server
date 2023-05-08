@@ -78,6 +78,7 @@ app1.use(
   cors({
     // origin: "https://my-machine-store-0l73.onrender.com",
     // origin : "http://localhost:3000",
+    // origin : "http://mymachinestore.com",
       origin: "http://15.207.31.23:3000",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
@@ -157,10 +158,10 @@ mongoose
 
 
   app1.get("/", (req, res) => {
-    return res.send("This is the Trade Enquiry api");
+    return res.send("Welcome to MyMachine Store Server");
   });
   app2.get("/", (req, res) => {
-    return res.send("This is the Trade Enquiry api");
+    return res.send("Welcome to MyMachine Store Server");
   });
 
   app1.get("/fetch", async (req, res) => {

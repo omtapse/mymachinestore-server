@@ -246,7 +246,7 @@ export const productDetail=async(req,res)=>{
 };
 export const getProductById = async (req, res) => {
   const _id = req.params.id
-  console.log("pidd=>", _id);
+  // console.log("pidd=>", _id);
   try {
     const uidetail = await addProduct.findById({
      _id
@@ -260,11 +260,17 @@ export const getProductById = async (req, res) => {
 export const updateProductById = async(req, res) => {
   console.log(req.params);
   try{
-   const upadted= await addProduct.findByIdAndUpdate({ _id: req.params.id},req.body,{new:true});
+   const upadted= await addProduct.findByIdAndUpdate({ _id: req.params.id}, {data: req.body.data}, {new:true});
     return res.status(200).json( upadted );
     // .then((doc) => console.log(doc))
   }catch (error) {
     console.log("error----->", error.message);
     return res.status(500).json("someting went wrong......");
   }
+};
+export const deleteProductById = async (req, res) => {
+  console.log(req.params);
+  addProduct.findByIdAndDelete({ _id: req.params.id })
+    .then((doc) => console.log(doc))
+    .catch((err) => console.log(err));
 };

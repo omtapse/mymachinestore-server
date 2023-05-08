@@ -21,6 +21,7 @@ import {
   getProductById,
   productDetail,
   superAdminProductList,
+  deleteProductById,
 } from "../controllers/vendor/product.js";
 import { editProfile, profile } from "../controllers/vendor/profile.js";
 import { vendorAuth, vendorlogOut } from "../controllers/vendor/vendorAuth.js";
@@ -37,6 +38,7 @@ import {
 import { createRequire } from "module";
 import dotenv from "dotenv"
 import addProduct from "../modale/addProduct.js";
+import { isAdmin } from "../middleware/adminAuthMiddleware.js";
 dotenv.config({ path: "./config.env" });
 const require = createRequire(import.meta.url);
 // const { S3Client } = require('@aws-sdk/client-s3');
@@ -191,8 +193,8 @@ routes.post("/addProduct", upload.single("image"), addVendoProduct);
 // });
 
 
-// routes.get("/productList", vendorAuthrisation, productList);
-// routes.get("/:id", getProductById)
+routes.get("/productList", vendorAuthrisation, productList);
+
 // routes.put("/editProduct:id", updateProductById);
 // routes.put("/:id", updateProductById)
 routes.get("/productList", productList);
@@ -211,5 +213,9 @@ routes.post("/addVendor", superAdmin_Addcompany_Login);
 routes.post("/signUpVendor", addCompany_Sign_up);
 routes.get("/superAdminCompanyList", superAdminCompanyList);
 routes.get("/companyDetail", CompanyDetail);
+routes.get("/editProduct/:id", getProductById);
+routes.put("/updateProduct/:id", isAdmin, updateProductById);
+routes.delete("/deleteProduct/:id", deleteProductById)
+ 
 
 export default routes;
