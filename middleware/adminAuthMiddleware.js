@@ -14,8 +14,8 @@ import superAdminAuthentication from "../modale/superAdminAuthentication.js";
 
   export const isAdmin = async (req, res, next) => {
     try {
-      const user = await superAdminAuthentication.findById(req.user._id);
-      if (user.email !== "mymachinestoreaws@gmail.com") {
+      const user = await superAdminAuthentication.findById(req.params._id);
+      if (user._id !== "63c2b585554e179377ec9fb0") {
         return res.status(401).send({
           success: false,
           message: "UnAuthorized Access",

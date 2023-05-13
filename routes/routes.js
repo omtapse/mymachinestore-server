@@ -214,7 +214,7 @@ routes.post("/signUpVendor", addCompany_Sign_up);
 routes.get("/superAdminCompanyList", superAdminCompanyList);
 routes.get("/companyDetail", CompanyDetail);
 routes.get("/editProduct/:id", getProductById);
-routes.put("/updateProduct/:id", isAdmin, updateProductById);
+routes.put("/updateProduct/:id", updateProductById);
 routes.delete("/deleteProduct/:id", deleteProductById)
  
 

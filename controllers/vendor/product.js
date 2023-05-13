@@ -259,8 +259,12 @@ export const getProductById = async (req, res) => {
 };
 export const updateProductById = async(req, res) => {
   console.log(req.params);
+  // let img = req.file.location;
+    if(req.file!== undefined){
+      req.body.image = req.file.location;
+    }
   try{
-   const upadted= await addProduct.findByIdAndUpdate({ _id: req.params.id}, {data: req.body.data}, {new:true});
+   const upadted= await addProduct.findByIdAndUpdate({ _id: req.params.id}, {$set: req.body});
     return res.status(200).json( upadted );
     // .then((doc) => console.log(doc))
   }catch (error) {
@@ -270,7 +274,19 @@ export const updateProductById = async(req, res) => {
 };
 export const deleteProductById = async (req, res) => {
   console.log(req.params);
-  addProduct.findByIdAndDelete({ _id: req.params.id })
-    .then((doc) => console.log(doc))
+  await addProduct.deleteOne({ _id: req.params.id })
+    .then((res) => console.log(res))
     .catch((err) => console.log(err));
 };
+// export const deleteProductById = async (req, res) => {
+//   console.log(req.params);
+//   try{
+//     const deleted= await addProduct.fiiter((del)=> del.id === req.params.id)
+//     return res.status(200).json( deleted );
+//   }catch (error) {
+//     console.log("error----->", error.message);
+//     return res.status(500).json("deleted went wrong......");
+//   }
+ 
+    
+// };
