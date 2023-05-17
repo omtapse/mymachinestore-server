@@ -11,6 +11,7 @@ export const latestProduct = async (req, res) => {
           product_name: 1,
           discriptrion: 1,
           Publish_Date: 1,
+          brand:1
         }
       )
       .limit(5)

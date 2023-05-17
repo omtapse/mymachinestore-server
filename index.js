@@ -79,8 +79,8 @@ app1.use(
     // origin: "https://my-machine-store-0l73.onrender.com",
     // origin : "http://localhost:3000",
     // origin : "http://mymachinestore.com",
-      origin: "http://15.207.31.23:3000",
-    credentials: true,
+     origin: "http://15.207.31.23:3000",
+    // credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
 );

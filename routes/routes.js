@@ -7,11 +7,15 @@ import {
   superAdminLogIn,
 } from "../controllers/admin/superAdminAuth.js";
 import {
+  addCompanyDetailVendor,
+  deleteEnquiry,
   enquiryDetail,
   getEnquiry,
+  updatedStatus,
+  updatedStatus_successful,
 } from "../controllers/enquiry/tardeEnquiry.js";
-import { addCompany_Sign_up, approvedMail, CompanyDetail, superAdminCompanyList, superAdmin_Addcompany_Login } from "../controllers/mail/approvedMail.js";
-import { mail } from "../controllers/mail/mail.js";
+import { AddCompanyDetail, addCompany_Sign_up,  deleteCompany, approvedMail, CompanyDetail, superAdminCompanyList, superAdmin_Addcompany_Login } from "../controllers/mail/approvedMail.js";
+import { mail, sign_in_mail } from "../controllers/mail/mail.js";
 import { enquiry, getUserEnquiry } from "../controllers/user/enquiry.js";
 import {
   addVendoProduct,
@@ -20,6 +24,7 @@ import {
   productList,
   getProductById,
   productDetail,
+  deleteProduct,
   superAdminProductList,
   deleteProductById,
 } from "../controllers/vendor/product.js";
@@ -38,6 +43,7 @@ import {
 import { createRequire } from "module";
 import dotenv from "dotenv"
 import addProduct from "../modale/addProduct.js";
+import { productFilter } from "../controllers/filter/ProductFilter.js";
 import { isAdmin } from "../middleware/adminAuthMiddleware.js";
 dotenv.config({ path: "./config.env" });
 const require = createRequire(import.meta.url);
@@ -208,13 +214,29 @@ routes.get("/latestTradeEnquiry", latestTradeEnquiries);
 routes.get("/latestUserEnquiry", latestUserEnquiries);
 routes.get("/latestProduct", latestProduct);
 routes.get("/productDetail", productDetail);
+routes.delete("/deleteEnquiry", deleteEnquiry);
+routes.delete("/deleteCompany/:id", deleteCompany);
 // for addvendor from super Admin
 routes.post("/addVendor", superAdmin_Addcompany_Login);
 routes.post("/signUpVendor", addCompany_Sign_up);
 routes.get("/superAdminCompanyList", superAdminCompanyList);
 routes.get("/companyDetail", CompanyDetail);
+routes.put("/addCompanyDetail", upload.single("logo"), AddCompanyDetail);
+routes.post("/signInMail", sign_in_mail);
+routes.post("/status", updatedStatus);
+routes.put("/successfulStatus", updatedStatus_successful);
+//for vendor detail add
+routes.put("/addCompanyDetailVendor",upload.single("logo"), addCompanyDetailVendor);
+
+
+//product
+routes.delete("/deleteProduct", deleteProduct);
+//filter
+routes.get("/filter", productFilter);
+
+// for superadmin product crud operation 
 routes.get("/editProduct/:id", getProductById);
-routes.put("/updateProduct/:id", updateProductById);
+routes.put("/updateProduct/:id", upload.single("image"), updateProductById);
 routes.delete("/deleteProduct/:id", deleteProductById)
  
 

@@ -91,9 +91,11 @@ export const superAdmin_Addcompany_Login = async (req, res) => {
       company_name: company_name,
     });
     if (addCompany) {
-      res
-        .status(201)
-        .json({ message: "New user is created", result: addCompany._id });
+      res.status(201).json({
+        message: "New user is created",
+        result: addCompany._id,
+        emailId: addCompany.emailId,
+      });
     }
   } catch (error) {
     console.log(error);
@@ -103,7 +105,7 @@ export const superAdmin_Addcompany_Login = async (req, res) => {
 export const addCompany_Sign_up = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const exist = await adminDetail.findOne({ email: email });
+    const exist = await adminDetail.findOne({ emailId: email });
     if (!exist) {
       return res.status(404).json({ message: "No user found" });
     }
@@ -129,7 +131,7 @@ export const superAdminCompanyList = async (req, res) => {
   const total = await adminDetail.countDocuments({});
   try {
     const newUser = await adminDetail
-      .find({}, { company_name: 1, ownerName: 1, emailId: 1, phoneNo: 1 })
+      .find({}, { company_name: 1, ownerName: 1,managerName:1, emailId: 1,logo:1, city:1, phoneNo:1, status:1 })
       .limit(pageSize)
       .skip(pageSize * page);
     console.log("newUser2===>", newUser);
@@ -156,3 +158,97 @@ export const CompanyDetail=async(req,res)=>{
     return res.status(500).json("someting went wrong......");
   }
 }
+
+
+export const AddCompanyDetail = async (req, res) => {
+  console.log("body", req.body);
+  const {
+    company_name,
+    address,
+    city,
+    state,
+    image,
+    country,
+    phoneNo,
+    email,
+    ownerName,
+    regNo,
+    panNo,
+    discription,
+    type,
+    password,
+    userName,
+    managerName,
+    status,
+    machine,
+    customer,
+    employees,
+    engineer,
+  } = req.body;
+  const _id = req.body.companyId;
+  console.log("id===>", _id);
+  // let img = req.file.path;
+  const salt = bcrypt.genSaltSync(10);
+
+  const hashPassword = await bcrypt.hash(password, salt);
+
+  try {
+    const uData = await adminDetail
+      .findByIdAndUpdate(
+        _id,
+        // {
+        //   $set: req.body,
+        // },
+        {
+          company_name: company_name,
+          address: address,
+          city: city,
+          state: state,
+          // logo: img,
+          country: country,
+          phoneNo: phoneNo,
+          emailId: email,
+          ownerName: ownerName,
+          regNo: regNo,
+          panNo: panNo,
+          discription: discription,
+          type: type,
+          machine: machine,
+          customer:customer,
+          employees: employees,
+          engineer:engineer,
+          password: hashPassword,
+          userName: userName,
+          managerName: managerName,
+          status: status,
+        }
+      )
+      .clone();
+    if (req.file) {
+      await adminDetail.findByIdAndUpdate(_id, { logo: req.file.path }).clone();
+    }
+    if (uData) {
+      return res.status(200).json("Updated successfully");
+    } else {
+      return res.status(404).json("Something went wrong");
+    }
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+};
+export const deleteCompany = async (req, res) => {
+  console.log("delete====>", req.params.id);
+  const { id } = req.params;
+  try {
+    const newUser = await adminDetail.findByIdAndDelete({
+      _id: id,
+    });
+    console.log("newUser===>", newUser);
+    return res.status(200).json("Delete Successfully");
+  } catch (err) {
+    console.log("error----->", err.message);
+    return res.status(500).json("Sorry Can't Delete Company......");
+  }
+};
+

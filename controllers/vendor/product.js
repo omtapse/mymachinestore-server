@@ -139,30 +139,30 @@ export const addVendoProduct =
       //   product = await product.save();
     
       // const updatedUser = await addProduct.updateOne({
-      //   product_name:product_name,
-      //   discription:discription,
-      //   product_content:product_content,
-      //   MetaTitle:MetaTitle,
-      //   Publish_By:Publish_By,
-      //   user_id:_id,
-      //   image:img,
-      //   Publish_Date:Publish_Date,
-      //   Updated_On:Updated_On,
-      //   brand:brand,
-      //   category:category,
-      //   subCategory:subCategory,
-      //   featured:featured,
-      //   colour:colour,
-      //   manufacturerName:manufacturerName,
-      //   metaDescription:metaDescription,
-      //   metaKey:metaKey,
-      //   modalNum:modalNum,
-      //   dimensions:dimensions,
-      //   position:position,
-      //   supplier:supplier,
-      //   power:power,
-      //   weight:weight,
-      //   shortDiscription:shortDiscription,
+        // product_name:product_name,
+        // discription:discription,
+        // product_content:product_content,
+        // MetaTitle:MetaTitle,
+        // Publish_By:Publish_By,
+        // user_id:_id,
+        // image:img,
+        // Publish_Date:Publish_Date,
+        // Updated_On:Updated_On,
+        // brand:brand,
+        // category:category,
+        // subCategory:subCategory,
+        // featured:featured,
+        // colour:colour,
+        // manufacturerName:manufacturerName,
+        // metaDescription:metaDescription,
+        // metaKey:metaKey,
+        // modalNum:modalNum,
+        // dimensions:dimensions,
+        // position:position,
+        // supplier:supplier,
+        // power:power,
+        // weight:weight,
+        // shortDiscription:shortDiscription,
       // });
       // console.log("updatedUser===>", updatedUser);
       return res.status(200).json({ result: product});
@@ -218,7 +218,7 @@ export const superAdminProductList = async (req, res) => {
     const page = parseInt(req?.query?.page || "0");
     const total = await addProduct.countDocuments({});
     const newUser2 = await addProduct
-      .find({},{ product_name:1,brand:1,category:1})
+      .find({},{ product_name:1,brand:1,category:1,image:1,subCategory:1, modalNum:1})
       .limit(pageSize)
       .skip(pageSize * page);
     return res
@@ -259,12 +259,69 @@ export const getProductById = async (req, res) => {
 };
 export const updateProductById = async(req, res) => {
   console.log(req.params);
+ const { product_name,
+  discription,
+  product_content,
+  MetaTitle,
+  image,
+  // Publish_By,
+  _id,
+  Publish_Date,
+  // Updated_On,
+  brand,
+  category,
+  subCategory,
+  featured,
+  colour,
+  manufacturerName,
+  metaDescription,
+  metaKey,
+  modalNum,
+  dimensions,
+  position,
+  supplier,
+  power,
+  weight,
+  shortDiscription,
+ } = req.body;
+//  let image = req.file.path;
   // let img = req.file.location;
-    if(req.file!== undefined){
-      req.body.image = req.file.location;
-    }
+    // if(req.file!== undefined){
+    //   req.body.image = req.file.location;
+    //   console.log(req.body.image);
+    // }
   try{
-   const upadted= await addProduct.findByIdAndUpdate({ _id: req.params.id}, {$set: req.body});
+   const upadted= await addProduct.findByIdAndUpdate({ _id: req.params.id}, {$set: req.body}).clone();
+  // const upadted = await addProduct.findByIdAndUpdate({_id:req.params.id},{
+  //   product_name: product_name,
+  //   discription:discription,
+  //   product_content:product_content,
+  //   MetaTitle:MetaTitle,
+  //   // image:image,
+  //   // Publish_By:Publish_By,
+  //   user_id:_id,    
+  //   // Publish_Date:Publish_Date,
+  //   // Updated_On:Updated_On,
+  //   brand:brand,
+  //   category:category,
+  //   subCategory:subCategory,
+  //   featured:featured,
+  //   colour:colour,
+  //   manufacturerName:manufacturerName,
+  //   metaDescription:metaDescription,
+  //   metaKey:metaKey,
+  //   modalNum:modalNum,
+  //   dimensions:dimensions,
+  //   position:position,
+  //   supplier:supplier,
+  //   power:power,
+  //   weight:weight,
+  //   shortDiscription:shortDiscription,
+  // }).clone();
+
+   if (req.file) {
+    await addProduct.findByIdAndUpdate({ _id: req.params.id}, { image: req.file.path }).clone();
+  }
     return res.status(200).json( upadted );
     // .then((doc) => console.log(doc))
   }catch (error) {
@@ -272,7 +329,7 @@ export const updateProductById = async(req, res) => {
     return res.status(500).json("someting went wrong......");
   }
 };
-export const deleteProductById = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   console.log(req.params);
   await addProduct.deleteOne({ _id: req.params.id })
     .then((res) => console.log(res))
@@ -290,3 +347,21 @@ export const deleteProductById = async (req, res) => {
  
     
 // };
+
+
+export const deleteProductById=async(req,res)=>{
+  console.log("deleteproduct====>",req.params.id);
+  const {id} = req.params;
+  try {
+
+    const newUser = await addProduct.findByIdAndDelete({
+      _id:id
+    });
+    console.log("newUser===>", newUser);
+    return res.status(200).json("Delete Successfully");
+  } catch (err) {
+     console.log("error----->",err.message)
+    return res.status(500).json("Sorry Can't Delete Product......");
+
+  }
+}

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const userSchema = mongoose.Schema;
 const newSchema = new userSchema({
-  company_name: { type: String,require:true,unique:true},
+  company_name: { type: String,require:true},
   address: { type: String },
   city: { type: String},
   state: { type: String },
@@ -9,7 +9,7 @@ const newSchema = new userSchema({
   phoneNo: { type: Number},
   mobileNo: { type: Number },
   emailId: { type: String,require:true,unique:true },
-  ownerName: { type: String } || "jsjs",
+  ownerName: { type: String },
   logo: { type: String},
   regNo: { type: String },
   panNo: { type: String},
@@ -17,6 +17,7 @@ const newSchema = new userSchema({
   type: { type: String },
   password: { type: String,require:true },
   userName: { type: String},
+  zip:{type: String},
   customer: {type: String, require:true},
   machine: {type: String, require:true},
   employees: {type: String, require:true},
@@ -24,6 +25,12 @@ const newSchema = new userSchema({
   date: {
     type: Date,
     default: Date.now,
+  },
+  managerName: {
+    type: String,
+  },
+  status: {
+    type: String,
   },
   // updated_date: {
   //   type: Date,
