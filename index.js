@@ -79,7 +79,7 @@ app1.use(
     // origin: "https://my-machine-store-0l73.onrender.com",
     // origin : "http://localhost:3000",
     // origin : "http://mymachinestore.com",
-     origin: "http://15.207.31.23:3000",
+     origin: "https://mymachinestore.com/",
     // credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
@@ -88,7 +88,7 @@ app2.use(
   cors({
       //  origin: "http://localhost:3001",
     // origin: "https://my-machine-store-dashboard.onrender.com",
-    origin: "http://15.207.31.23:3001",
+    origin: "https://mymachinestore.com/admin",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
