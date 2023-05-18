@@ -158,14 +158,14 @@ mongoose
 
 
 
-  app1.get("/", (req, res) => {
+  app1.get("/api", (req, res) => {
     return res.send("Welcome to MyMachine Store Server");
   });
-  app2.get("/", (req, res) => {
+  app2.get("/enquiry", (req, res) => {
     return res.send("Welcome to MyMachine Store Server");
   });
 
-  app1.get("/fetch", async (req, res) => {
+  app1.get("/api/fetch", async (req, res) => {
     try {
       const uidetail = await addProduct.find({});
       return res.status(200).json( uidetail );
@@ -174,7 +174,7 @@ mongoose
       return res.status(500).json("someting went wrong......");
     }
   });
-  app1.get("/uniquecategories", async (req, res) => {
+  app1.get("/api/uniquecategories", async (req, res) => {
     try {
       const uidetail = await addProduct.distinct("category");
       return res.status(200).json( uidetail );
@@ -183,7 +183,7 @@ mongoose
       return res.status(500).json("someting went wrong......");
     }
   });
-  app1.get("/uniquesubcategories", async (req, res) => {
+  app1.get("/api/uniquesubcategories", async (req, res) => {
     try {
       const uidetail = await addProduct.distinct("subCategory");
       return res.status(200).json( uidetail );
@@ -193,7 +193,7 @@ mongoose
     }
   });
 
-  app1.get("/machinelisting", async (req, res) => {
+  app1.get("/api/machinelisting", async (req, res) => {
     try {
       const machinedetail = await adminDetail.find({});
       return res.status(200).json( machinedetail );
@@ -202,7 +202,7 @@ mongoose
       return res.status(500).json("someting went wrong......");
     }
   });
-  app1.get("/companyproducts", async (req, res) => {
+  app1.get("/api/companyproducts", async (req, res) => {
     try {
       const productdetail = await addProduct.find({});
       return res.status(200).json( productdetail );
@@ -212,7 +212,7 @@ mongoose
     }
   });
 
-  app1.get("/search/:key", async (req, res) => {
+  app1.get("/api/search/:key", async (req, res) => {
     try {
       const searchdetail = await addProduct.find({
         "$or" :[
