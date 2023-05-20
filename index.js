@@ -88,7 +88,8 @@ app2.use(
   cors({
       //  origin: "http://localhost:3001",
     // origin: "https://my-machine-store-dashboard.onrender.com",
-    origin: "https://mymachinestore.com/admin",
+    // origin: "https://mymachinestore.com/admin",
+       origin: "http://15.207.31.23:3001",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
@@ -161,7 +162,7 @@ mongoose
   app1.get("/api", (req, res) => {
     return res.send("Welcome to MyMachine Store Server");
   });
-  app2.get("/enquiry", (req, res) => {
+  app2.get("/", (req, res) => {
     return res.send("Welcome to MyMachine Store Server");
   });
 
