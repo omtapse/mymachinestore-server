@@ -99,7 +99,7 @@ app2.use(
  
 
 
-app1.use("/enquiry", routes);
+app1.use("/api/enquiry", routes);
 app2.use("/enquiry", routes);
 // const storage=multer.diskStorage({
 //   destination:function(req,file,cb){
@@ -175,6 +175,24 @@ mongoose
       return res.status(500).json("someting went wrong......");
     }
   });
+  app1.get("/api/products", async (req, res) =>  {
+    try {
+      const pageSize = 9;
+      const page = parseInt(req?.query?.page || "0");
+      const total = await addProduct.countDocuments({});
+      const newUser2 = await addProduct
+        .find({})
+        .limit(pageSize)
+        .skip(pageSize * page);
+      return res
+        .status(200)
+        .json({ result: newUser2, totalPages: Math.ceil(total / pageSize) });
+    } catch (error) {
+      console.log("error----->", error.message);
+      return res.status(500).json("someting went wrong......");
+    }
+  });
+  
   app1.get("/api/uniquecategories", async (req, res) => {
     try {
       const uidetail = await addProduct.distinct("category");
