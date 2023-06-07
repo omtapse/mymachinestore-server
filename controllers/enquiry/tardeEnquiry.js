@@ -38,7 +38,7 @@ export const getEnquiry = async (req, res) => {
   const total = await enquiry.countDocuments({});
   try {
     const newUser = await enquiry
-      .find({}, { companyName: 1, email: 1, location: 1, phoneNo: 1,  status: 1, })
+      .find({}, {_id:1, companyName: 1, email: 1, location: 1, phoneNo: 1,  status: 1 })
       .limit(pageSize)
       .skip(pageSize * page);
     console.log("newUser2===>", newUser);

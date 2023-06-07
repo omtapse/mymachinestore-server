@@ -27,6 +27,14 @@ import {
   deleteProduct,
   superAdminProductList,
   deleteProductById,
+  clientProductFetch,
+  clientProductByPage,
+  clientMachinesFetch,
+  clientCompanyProducts,
+  clientLatestProduct,
+  clientProductDetail,
+  clientProductByBrands,
+  clientProductByCategories,
 } from "../controllers/vendor/product.js";
 import { editProfile, profile } from "../controllers/vendor/profile.js";
 import { vendorAuth, vendorlogOut } from "../controllers/vendor/vendorAuth.js";
@@ -45,10 +53,14 @@ import dotenv from "dotenv"
 import addProduct from "../modale/addProduct.js";
 import { productFilter } from "../controllers/filter/ProductFilter.js";
 import { isAdmin } from "../middleware/adminAuthMiddleware.js";
+import { LatestclientBlog, addAdminBlogs, clientBlogList, deleteBlogById, getBlogById, superAdminBlogList, updateBlogById } from "../controllers/blogs/addAdminBlogs.js";
+import addSlider from "../modale/addSlider.js";
+import { add_slider, clientSliderFetch, deleteSliderById, getSliderById, superAdminSliderList, updateSliderById } from "../controllers/slider/slider_controller.js";
+import { addAdminapplication, clientApplicationFetch, deleteApplicationById, getApplicationById, superAdminApplicationList, updateApplicationById } from "../controllers/application/application_controller.js";
 dotenv.config({ path: "./config.env" });
 const require = createRequire(import.meta.url);
 // const { S3Client } = require('@aws-sdk/client-s3');
-const aws = require("aws-sdk");
+// const aws = require("aws-sdk");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const cloudinary = require('cloudinary').v2;
@@ -238,6 +250,61 @@ routes.get("/filter", productFilter);
 routes.get("/editProduct/:id", getProductById);
 routes.put("/updateProduct/:id", upload.single("image"), updateProductById);
 routes.delete("/deleteProduct/:id", deleteProductById)
- 
 
+// for client product fetch
+routes.get("/fetch", clientProductFetch);
+routes.get("/companyproducts", clientCompanyProducts)
+routes.get("/latest", clientLatestProduct)
+routes.get("/products", clientProductByPage);
+routes.get("/productcontent", clientProductDetail);
+routes.get("/machinelisting", clientMachinesFetch);
+routes.get("/productbybrand/:brand", clientProductByBrands);
+routes.get("/productbycategory/:category", clientProductByCategories)
+
+// * for admin blog 
+routes.post("/addBlog",  upload.fields([
+  { name: "blog_image", maxCount: 1 },
+  { name: "blog_bannerimage", maxCount: 1 }
+]), addAdminBlogs);
+routes.get("/superAdminBlogList", superAdminBlogList);
+routes.get("/editBlog/:id", getBlogById);
+routes.put("/updateBlog/:id", upload.fields([
+  { name: "blog_image", maxCount: 1 },
+  { name: "blog_bannerimage", maxCount: 1 },
+]), updateBlogById);
+routes.delete("/deleteBlog/:id", deleteBlogById)
+// * for admin blog end
+
+// for client blog
+routes.get("/clientBlogList", clientBlogList);
+routes.get("/latestblog", LatestclientBlog)
+
+// * for admin slider
+routes.post("/add_slider",  upload.fields([
+  { name: "slider_image", maxCount: 1 },
+  { name: "slider_res_image", maxCount: 1 }
+]), add_slider);
+routes.get("/editSlider/:id", getSliderById);
+routes.get("/superAdminSliderList", superAdminSliderList);
+routes.put("/updateSlider/:id",  upload.fields([
+  { name: "slider_image", maxCount: 1 },
+  { name: "slider_res_image", maxCount: 1 }
+]), updateSliderById);
+routes.delete("/deleteSlider/:id", deleteSliderById)
+// * for admin slider end
+
+ 
+// * for client slider
+routes.get("/getslider", clientSliderFetch)
 export default routes;
+
+
+// * for admin applications
+
+routes.post("/addApplication",upload.single("application_image"), addAdminapplication);
+routes.get("/editApplication/:id", getApplicationById);
+routes.get("/superAdminApplicationList", superAdminApplicationList);
+routes.delete("/deleteApplication/:id", deleteApplicationById)
+routes.put("/updateApplication/:id",upload.single("application_image"), updateApplicationById);
+// * for client applications
+routes.get("/getapplication", clientApplicationFetch)

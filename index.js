@@ -68,10 +68,10 @@ const app2 = express();
 // const server1 = http.createServer(app1);
 // const server2 = http.createServer(app2);
 // const wsServer = new WebSocket.Server({ port: PORT2 });
-app1.use(express.json({limit: "50mb", extended: true }));
-app2.use(express.json({limit: "50mb", extended: true }));
-app1.use(express.urlencoded({limit: "50mb", extended: true }));
-app2.use(express.urlencoded({limit: "50mb", extended: true }));
+app1.use(express.json({limit: "100mb", extended: true }));
+app2.use(express.json({limit: "100mb", extended: true }));
+app1.use(express.urlencoded({limit: "100mb", extended: true }));
+app2.use(express.urlencoded({limit: "100mb", extended: true }));
 
 
 app1.use(
@@ -99,7 +99,9 @@ app2.use(
  
 
 
-app1.use("/api/enquiry", routes);
+app1.use("/api", routes);
+// app1.use("/product", producetroutes")
+// app1.use("/blog", blogroutes")
 app2.use("/enquiry", routes);
 // const storage=multer.diskStorage({
 //   destination:function(req,file,cb){
@@ -110,8 +112,8 @@ app2.use("/enquiry", routes);
 //  }
 // })
 // let upload=multer({storage:storage})
-app2.use(bodyParser.json({limit: '50mb'}));
-app2.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+app2.use(bodyParser.json({limit: '100mb'}));
+app2.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:50000}));
 
 // if (process.env.NODE_ENV === 'production') {
 //   app2.use(express.static(path.resolve(__dirname, 'build')));
@@ -166,80 +168,83 @@ mongoose
     return res.send("Welcome to MyMachine Store Server");
   });
 
-  app1.get("/api/fetch", async (req, res) => {
-    try {
-      const uidetail = await addProduct.find({});
-      return res.status(200).json( uidetail );
-    } catch (error) {
-      console.log("error----->", error.message);
-      return res.status(500).json("someting went wrong......");
-    }
-  });
-  app1.get("/api/products", async (req, res) =>  {
-    try {
-      const pageSize = 9;
-      const page = parseInt(req?.query?.page || "0");
-      const total = await addProduct.countDocuments({});
-      const newUser2 = await addProduct
-        .find({})
-        .limit(pageSize)
-        .skip(pageSize * page);
-      return res
-        .status(200)
-        .json({ result: newUser2, totalPages: Math.ceil(total / pageSize) });
-    } catch (error) {
-      console.log("error----->", error.message);
-      return res.status(500).json("someting went wrong......");
-    }
-  });
+  // app1.get("/api/fetch", async (req, res) => {
+  //   try {
+  //     const uidetail = await addProduct.find({});
+  //     return res.status(200).json( uidetail );
+  //   } catch (error) {
+  //     console.log("error----->", error.message);
+  //     return res.status(500).json("someting went wrong......");
+  //   }
+  // });
+  // app1.get("/api/products", async (req, res) =>  {
+  //   try {
+  //     const pageSize = 9;
+  //     const page = parseInt(req?.query?.page || "0");
+  //     const total = await addProduct.countDocuments({});
+  //     const newUser2 = await addProduct
+  //       .find({})
+  //       .limit(pageSize)
+  //       .skip(pageSize * page);
+  //     return res
+  //       .status(200)
+  //       .json({ result: newUser2, totalPages: Math.ceil(total / pageSize) });
+  //   } catch (error) {
+  //     console.log("error----->", error.message);
+  //     return res.status(500).json("someting went wrong......");
+  //   }
+  // });
   
-  app1.get("/api/uniquecategories", async (req, res) => {
-    try {
-      const uidetail = await addProduct.distinct("category");
-      return res.status(200).json( uidetail );
-    } catch (error) {
-      console.log("error----->", error.message);
-      return res.status(500).json("someting went wrong......");
-    }
-  });
-  app1.get("/api/uniquesubcategories", async (req, res) => {
-    try {
-      const uidetail = await addProduct.distinct("subCategory");
-      return res.status(200).json( uidetail );
-    } catch (error) {
-      console.log("error----->", error.message);
-      return res.status(500).json("someting went wrong......");
-    }
-  });
+  // app1.get("/api/uniquecategories", async (req, res) => {
+  //   try {
+  //     const uidetail = await addProduct.distinct("category");
+  //     return res.status(200).json( uidetail );
+  //   } catch (error) {
+  //     console.log("error----->", error.message);
+  //     return res.status(500).json("someting went wrong......");
+  //   }
+  // });
+  // app1.get("/api/uniquesubcategories", async (req, res) => {
+  //   try {
+  //     const uidetail = await addProduct.distinct("subCategory");
+  //     return res.status(200).json( uidetail );
+  //   } catch (error) {
+  //     console.log("error----->", error.message);
+  //     return res.status(500).json("someting went wrong......");
+  //   }
+  // });
 
-  app1.get("/api/machinelisting", async (req, res) => {
-    try {
-      const machinedetail = await adminDetail.find({});
-      return res.status(200).json( machinedetail );
-    } catch (error) {
-      console.log("error----->", error.message);
-      return res.status(500).json("someting went wrong......");
-    }
-  });
-  app1.get("/api/companyproducts", async (req, res) => {
-    try {
-      const productdetail = await addProduct.find({});
-      return res.status(200).json( productdetail );
-    } catch (error) {
-      console.log("error----->", error.message);
-      return res.status(500).json("someting went wrong......");
-    }
-  });
+  // app1.get("/api/machinelisting", async (req, res) => {
+  //   try {
+  //     const machinedetail = await adminDetail.find({});
+  //     return res.status(200).json( machinedetail );
+  //   } catch (error) {
+  //     console.log("error----->", error.message);
+  //     return res.status(500).json("someting went wrong......");
+  //   }
+  // });
+  // app1.get("/api/companyproducts", async (req, res) => {
+  //   try {
+  //     const productdetail = await addProduct.find({});
+  //     return res.status(200).json( productdetail );
+  //   } catch (error) {
+  //     console.log("error----->", error.message);
+  //     return res.status(500).json("someting went wrong......");
+  //   }
+  // });
 
   app1.get("/api/search/:key", async (req, res) => {
+    const searchTerm = req.query.searchTerm;
+    const regex = new RegExp(searchTerm, 'i');
     try {
+      // const searchQuery = req.query.q.toLowerCase();
       const searchdetail = await addProduct.find({
         "$or" :[
-          {product_name : { $regex: req.params.key}},
-          {brand : { $regex: req.params.key}},
-          {category : { $regex: req.params.key}}
+          {product_name : {  $regex: regex }},
+          {brand : { $regex: regex }},
+          {category :{ $regex: regex }}
         ]
-      });
+      },{_id:1, product_name:1,modalNum:1,brand:1,category:1,subCategory:1,image:1,shortDiscription:1});
       return res.status(200).json( searchdetail );
     } catch (error) {
       console.log("error----->", error.message);

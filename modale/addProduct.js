@@ -32,4 +32,6 @@ const newSchema = new userSchema({
   weight: { type: String },
   shortDiscription:{type:String, require:true}
 });
+
+newSchema.index({product_content: 1 });
 export default mongoose.model("addProduct", newSchema);

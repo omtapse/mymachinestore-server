@@ -126,12 +126,12 @@ export const addCompany_Sign_up = async (req, res) => {
 };
 export const superAdminCompanyList = async (req, res) => {
   console.log("getreq===>", req.body);
-  const pageSize = 10;
+  const pageSize = 8;
   const page = parseInt(req?.query?.page || "0");
   const total = await adminDetail.countDocuments({});
   try {
     const newUser = await adminDetail
-      .find({}, { company_name: 1, ownerName: 1,managerName:1, emailId: 1,logo:1, city:1, phoneNo:1, status:1 })
+      .find({}, { company_name: 1, ownerName: 1, managerName:1, emailId: 1,logo:1, city:1, phoneNo:1, status:1 })
       .limit(pageSize)
       .skip(pageSize * page);
     console.log("newUser2===>", newUser);

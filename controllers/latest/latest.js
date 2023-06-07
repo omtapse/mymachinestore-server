@@ -9,8 +9,8 @@ export const latestProduct = async (req, res) => {
         {},
         {
           product_name: 1,
-          discriptrion: 1,
-          Publish_Date: 1,
+          category: 1,
+          modalNum: 1,
           brand:1
         }
       )
@@ -29,9 +29,9 @@ export const latestUserEnquiries = async (req, res) => {
       .find(
         {},
         {
-          company_name: 1,
+          product_name: 1,
           email: 1,
-          phone_no: 1,
+          phone_number: 1,
           location: 1,
         }
       )
@@ -49,9 +49,9 @@ export const latestTradeEnquiries = async (req, res) => {
       .find(
         {},
         {
-          company_name: 1,
+          companyName: 1,
           email: 1,
-          phone_no: 1,
+          phoneNo: 1,
           location: 1,
         }
       )

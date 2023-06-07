@@ -1,4 +1,5 @@
 import addProduct from "../../modale/addProduct.js";
+import adminDetail from "../../modale/adminDetail.js";
 
 export const addVendoProduct =
   // (upload.single("image"),
@@ -214,7 +215,7 @@ export const productList = async (req, res) => {
 };
 export const superAdminProductList = async (req, res) => {
   try {
-    const pageSize = 10;
+    const pageSize = 15;
     const page = parseInt(req?.query?.page || "0");
     const total = await addProduct.countDocuments({});
     const newUser2 = await addProduct
@@ -363,5 +364,135 @@ export const deleteProductById=async(req,res)=>{
      console.log("error----->",err.message)
     return res.status(500).json("Sorry Can't Delete Product......");
 
+  }
+}
+// for client
+
+export const clientProductFetch =  async (req, res) => {
+  try {
+    const uidetail = await addProduct.find({},{_id:1, product_name:1, brand:1, modalNum:1,featured:1,category:1,image:1,Publish_Date:1,shortDiscription:1});
+    return res.status(200).json( uidetail );
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+}
+export const clientProductByPage = async (req, res) =>  {
+  try {
+    const pageSize = 12;
+    const page = parseInt(req?.query?.page || "0");
+    const total = await addProduct.countDocuments({});
+    const newUser2 = await addProduct
+      .find({},{_id:1, product_name:1,brand:1, modalNum:1,featured:1,category:1,image:1,Publish_Date:1,shortDiscription:1})
+      .limit(pageSize)
+      .skip(pageSize * page);
+    return res.status(200).json({ result: newUser2, totalPages: Math.ceil(total / pageSize) });
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+}
+export const clientProductByBrands = async (req, res) =>  {
+  try {
+  
+    const { brand } = req.params;
+  const { page, pageSize } = req.query;
+
+  const skip = (parseInt(page)) * parseInt(pageSize);
+  const limit = parseInt(pageSize);
+    const totalCount = await addProduct.countDocuments({ brand }).exec();
+   
+    const newUser2 = await addProduct
+      .find({brand}, {_id:1, product_name:1,brand:1,category:1,modalNum:1,image:1,shortDiscription:1})
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    return res.status(200).json({ result: newUser2, totalPages: Math.ceil(totalCount / pageSize) });
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+}
+
+export const clientProductByCategories = async (req, res) =>  {
+  try {
+  
+    const { category } = req.params;
+  const { page, pageSize } = req.query;
+
+  const skip = (parseInt(page)) * parseInt(pageSize);
+  const limit = parseInt(pageSize);
+    const totalCount = await addProduct.countDocuments({ category }).exec();
+   
+    const newUser2 = await addProduct
+      .find({category},{_id:1, product_name:1,brand:1,category:1, modalNum:1,image:1,shortDiscription:1})
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    return res.status(200).json({ result: newUser2, totalPages: Math.ceil(totalCount / pageSize) });
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+}
+export const clientLatestProduct = async (req, res) => {
+  try {
+    const latestProduct = await addProduct
+      .find(
+        {},
+        {
+          _id:1,
+          product_name: 1,
+          modalNum:1,
+          image:1,
+          discriptrion: 1,
+          Publish_Date: 1,
+          brand:1,
+          category:1,
+          shortDiscription:1
+        }
+      )      
+      .sort({ $natural: -1 });
+
+    return res.status(200).json( latestProduct );
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+};
+
+export const clientMachinesFetch = async (req, res) => {
+  try {
+    const machinedetail = await adminDetail.find({});
+    return res.status(200).json( machinedetail);
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+}
+
+export const clientCompanyProducts = async (req, res) => {
+  try {
+    const productdetail = await addProduct.find({});
+    return res.status(200).json( productdetail );
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+}
+export const clientProductDetail = async (req, res) => {
+  try {
+    const productcontent = await addProduct
+      .find(
+        {},
+        {
+          _id:1,product_content:1,power:1,subCategory:1,dimensions:1, 
+          position:1,         
+          modalNum:1,        
+        }); 
+      return res.status(200).json( productcontent );
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
   }
 }
