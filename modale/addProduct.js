@@ -7,7 +7,8 @@ const newSchema = new userSchema({
   product_content:{type: String},
   MetaTitle: { type: String },
   // Publish_By: { type: String },
-  user_id: { type: String },
+  vendorID: { type: String },
+  // vendor: { type: userSchema.Types.ObjectId, ref: 'adminDetail', required: true },
   image: { type: String },
   Publish_Date: {
     type: Date,

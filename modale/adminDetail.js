@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const userSchema = mongoose.Schema;
 const newSchema = new userSchema({
-  company_name: { type: String,require:true},
+  company_name: { type: String, require:true, unique:true},
   address: { type: String },
   city: { type: String},
   state: { type: String },
@@ -9,6 +9,7 @@ const newSchema = new userSchema({
   phoneNo: { type: Number},
   mobileNo: { type: Number },
   emailId: { type: String,require:true,unique:true },
+  company_description:{type: String},
   ownerName: { type: String },
   logo: { type: String},
   regNo: { type: String },

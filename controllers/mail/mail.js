@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import adminDetail from "../../modale/adminDetail.js";
 // import handlebars from "handlebars";
 import enquiry from "../../modale/enquiry.js";
 // import require from "./cjs-require.";
@@ -450,7 +451,7 @@ export const mail = async (req, res) => {
 };
 
 export const sign_in_mail = async (req, res) => {
-  const { emailId } = req.body;
+  const { emailId, password } = req.body;
   try {
     const existingEmailId = await adminDetail.findOne({
       emailId: emailId,
@@ -472,8 +473,14 @@ export const sign_in_mail = async (req, res) => {
       to: `${existingEmailId.emailId}`,
       from: "shivani06.dongarwar@gmail.com",
       subject: "MyMachineStore.com",
-      text: "hello this is the body of the email",
-      html: `Thank you for registration this is your user name:${existingEmailId.emailId} and password:${existingEmailId.password}`,
+      text: "Hello, this is the body of the email",
+      html: `
+      <p>Thank you for registering!</p>
+      <p>Your username: ${existingEmailId.emailId}</p>
+      <p>Your password: ${password}</p>
+      <p>Please click the link below to log in:</p>
+      <a href="http://localhost:3001/vendorAuth">Login Form</a>
+    `,
     };
     await transport.sendMail(mailOptions)
     return res.status(200).json("Message send successful");

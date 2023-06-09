@@ -14,7 +14,7 @@ import {
   updatedStatus,
   updatedStatus_successful,
 } from "../controllers/enquiry/tardeEnquiry.js";
-import { AddCompanyDetail, addCompany_Sign_up,  deleteCompany, approvedMail, CompanyDetail, superAdminCompanyList, superAdmin_Addcompany_Login } from "../controllers/mail/approvedMail.js";
+import { AddCompanyDetail, addCompany_Sign_up,  deleteCompany, approvedMail, CompanyDetail, superAdminCompanyList, superAdmin_Addcompany_Login, AddCompanyVendorDetail } from "../controllers/mail/approvedMail.js";
 import { mail, sign_in_mail } from "../controllers/mail/mail.js";
 import { enquiry, getUserEnquiry } from "../controllers/user/enquiry.js";
 import {
@@ -57,6 +57,8 @@ import { LatestclientBlog, addAdminBlogs, clientBlogList, deleteBlogById, getBlo
 import addSlider from "../modale/addSlider.js";
 import { add_slider, clientSliderFetch, deleteSliderById, getSliderById, superAdminSliderList, updateSliderById } from "../controllers/slider/slider_controller.js";
 import { addAdminapplication, clientApplicationFetch, deleteApplicationById, getApplicationById, superAdminApplicationList, updateApplicationById } from "../controllers/application/application_controller.js";
+// import { addVendorProduct, vendorproductList } from "../controllers/vendor/vendor_product.js";
+import { vendorproductList } from "../controllers/vendor/product.js";
 dotenv.config({ path: "./config.env" });
 const require = createRequire(import.meta.url);
 // const { S3Client } = require('@aws-sdk/client-s3');
@@ -187,12 +189,13 @@ routes.post("/logOut", authenticate, logOut);
 routes.post("/vendorlogOut", vendorAuthrisation, vendorlogOut);
 routes.post("/detail", enquiryDetail);
 routes.get("/getEnquiry", getEnquiry);
-routes.post("/approvedMail", logo.single("logo"),  approvedMail);
+routes.post("/approvedMail", upload.single("logo"),  approvedMail);
 routes.post("/mail", mail);
 routes.post("/vendorAdminLogIN", vendorAuth);
 // routes.post("/addProduct", vendorAuthrisation, addVendoProduct);
 routes.post("/addProduct", upload.single("image"), addVendoProduct);
-
+routes.post("/vendoraddProduct", upload.single("image"), addVendoProduct);
+routes.get("/vendorProductList", vendorproductList)
 
 // routes.post("/addProduct", upload().single("image"), async (req, res) => {
 //   await addProduct.create({ image: req.file.location });
@@ -228,12 +231,14 @@ routes.get("/latestProduct", latestProduct);
 routes.get("/productDetail", productDetail);
 routes.delete("/deleteEnquiry", deleteEnquiry);
 routes.delete("/deleteCompany/:id", deleteCompany);
-// for addvendor from super Admin
+// ! for addvendor from super Admin
 routes.post("/addVendor", superAdmin_Addcompany_Login);
 routes.post("/signUpVendor", addCompany_Sign_up);
 routes.get("/superAdminCompanyList", superAdminCompanyList);
 routes.get("/companyDetail", CompanyDetail);
 routes.put("/addCompanyDetail", upload.single("logo"), AddCompanyDetail);
+routes.put("/addCompanyVendorDetail/:id", upload.single("logo"), AddCompanyVendorDetail);
+// ! working
 routes.post("/signInMail", sign_in_mail);
 routes.post("/status", updatedStatus);
 routes.put("/successfulStatus", updatedStatus_successful);

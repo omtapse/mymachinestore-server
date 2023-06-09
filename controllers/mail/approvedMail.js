@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import adminDetail from "../../modale/adminDetail.js";
+import nodemailer from "nodemailer";
 
 export const approvedMail = async (req, res) => {
   // console.log("req===>", req);
@@ -15,6 +16,7 @@ export const approvedMail = async (req, res) => {
     mobileNo,
     emailId,
     ownerName,
+    company_description,
     logo,
     regNo,
     panNo,
@@ -50,6 +52,7 @@ export const approvedMail = async (req, res) => {
       mobileNo: mobileNo,
       emailId: emailId,
       ownerName: ownerName,
+      company_description:company_description,
       logo: img,
       regNo: regNo,
       panNo: panNo,
@@ -76,7 +79,7 @@ export const approvedMail = async (req, res) => {
     return res.status(500).json("someting went wrong......");
   }
 };
-export const superAdmin_Addcompany_Login = async (req, res) => {
+export const addCompany_Sign_up  = async (req, res) => {
   const { email, password, company_name, confirm_password } = req.body;
   try {
     const existinguser = await adminDetail.findOne({ emailId: email });
@@ -95,33 +98,124 @@ export const superAdmin_Addcompany_Login = async (req, res) => {
         message: "New user is created",
         result: addCompany._id,
         emailId: addCompany.emailId,
+        password: password,
       });
     }
   } catch (error) {
-    console.log(error);
+    console.log("error pass", error);
     return res.status(500).json("Something went worng...");
   }
 };
-export const addCompany_Sign_up = async (req, res) => {
+
+// export const addCompany_Sign_up = async (req, res) => {
+//   const { email, password, company_name, confirm_password } = req.body;
+//   if (typeof password === 'undefined') {
+//     return res.status(400).json('Password is required');
+//   }
+//   console.log('req.body:', req.body); // Check the entire request body
+// console.log('password:', password); // Check the value of the password field
+//   try {
+//     const existinguser = await adminDetail.findOne({ emailId: email });
+//     if (existinguser) {
+//       return res.status(404).json("Email Id already exists");
+//     }
+
+//     const salt =  bcrypt.genSaltSync(10);
+//     console.log('password:', password);
+//     console.log('salt:', salt);
+//     const hashPassword = await bcrypt.hash(password, salt);
+//     console.log('hashPassword:', hashPassword);
+
+//     const addCompany = await adminDetail.create({
+//       emailId: email,
+//       password: hashPassword,
+//       company_name: company_name,
+//     });
+
+//     if (!addCompany) {
+//       return res.status(500).json("Failed to create a new user");
+//     }
+
+//     const transport = nodemailer.createTransport({
+//       service: "gmail",
+//       auth: {
+//         user: "shivani06.dongarwar@gmail.com",
+//         pass: "ydubhqkvqsrvwpkq",
+//       },
+//       tls: {
+//         rejectUnauthorized: false,
+//       },
+//     });
+
+//     const mailOptions = {
+//       to: email,
+//       from: "shivani06.dongarwar@gmail.com",
+//       subject: "MyMachineStore.com",
+//       text: "Hello, this is the body of the email",
+//       html: `
+//       <p>Thank you for registering!</p>
+//       <p>Your username: ${email}</p>
+//       <p>Your password: ${password}</p>
+//       <p>Please click the link below to log in:</p>
+//       <a href="http://localhost:3001/vendorAuth">Login Form</a>`,
+//     };
+
+//     await transport.sendMail(mailOptions);
+
+//     return res.status(201).json({
+//       message: "New user is created",
+//       result: addCompany._id,
+//       emailId: addCompany.emailId,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json("Something went wrongin sending mail...");
+//   }
+// };
+// export const superAdmin_Addcompany_Login = async (req, res) => {
+//   const { email, password } = req.body;
+//   try {
+//     const exist = await adminDetail.findOne({ emailId: email });
+//     if (!exist) {
+//       return res.status(404).json({ message: "No user found" });
+//     }
+//     const isPasswordCorrect = bcrypt.compare(password, exist.password);
+//     if (!isPasswordCorrect) {
+//       return res.status(400).json({ message: "Wrong Password" });
+//     }
+//     const token = jwt.sign(
+//       { id: existinguser._id },
+//       process.env.ACCESS_TOKEN_KEY,
+//       { expiresIn: "1d" }
+//     );
+//     res.cookie("access_token_3", token, { httpOnly: true });
+//     return res.status(200).json({ result: { id: existinguser._id } });
+//   } catch (error) {
+//     return res.status(500).json("Something went worng...");
+//   }
+// };
+
+
+export const superAdmin_Addcompany_Login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const exist = await adminDetail.findOne({ emailId: email });
     if (!exist) {
       return res.status(404).json({ message: "No user found" });
     }
-    const isPasswordCorrect = bcrypt.compare(password, exist.password);
+    const isPasswordCorrect = await bcrypt.compare(password, exist.password);
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Wrong Password" });
     }
     const token = jwt.sign(
-      { id: existinguser._id },
+      { id: exist._id },
       process.env.ACCESS_TOKEN_KEY,
       { expiresIn: "1d" }
     );
     res.cookie("access_token_3", token, { httpOnly: true });
-    return res.status(200).json({ result: { id: existinguser._id } });
+    return res.status(200).json({ result: { id: exist._id } });
   } catch (error) {
-    return res.status(500).json("Something went worng...");
+    return res.status(500).json("Something went wrong...");
   }
 };
 export const superAdminCompanyList = async (req, res) => {
@@ -172,6 +266,7 @@ export const AddCompanyDetail = async (req, res) => {
     phoneNo,
     email,
     ownerName,
+    company_description,
     regNo,
     panNo,
     discription,
@@ -209,6 +304,86 @@ export const AddCompanyDetail = async (req, res) => {
           phoneNo: phoneNo,
           emailId: email,
           ownerName: ownerName,
+          company_description:company_description,
+          regNo: regNo,
+          panNo: panNo,
+          discription: discription,
+          type: type,
+          machine: machine,
+          customer:customer,
+          employees: employees,
+          engineer:engineer,
+          password: hashPassword,
+          userName: userName,
+          managerName: managerName,
+          status: status,
+        }
+      )
+      .clone();
+    if (req.file) {
+      await adminDetail.findByIdAndUpdate(_id, { logo: req.file.path }).clone();
+    }
+    if (uData) {
+      return res.status(200).json("Updated successfully");
+    } else {
+      return res.status(404).json("Something went wrong");
+    }
+  } catch (error) {
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+};
+export const AddCompanyVendorDetail = async (req, res) => {
+  console.log("body", req.body);
+  const {
+    company_name,
+    address,
+    city,
+    state,
+    image,
+    country,
+    phoneNo,
+    email,
+    ownerName,
+    company_description,
+    regNo,
+    panNo,
+    discription,
+    type,
+    password,
+    userName,
+    managerName,
+    status,
+    machine,
+    customer,
+    employees,
+    engineer,
+  } = req.body;
+  const { VendorID } = req.params;
+  console.log("vendoradminid===>",VendorID);
+  // let img = req.file.path;
+  const salt = bcrypt.genSaltSync(10);
+
+  const hashPassword = await bcrypt.hash(password, salt);
+
+  try {
+    const uData = await adminDetail
+      .findByIdAndUpdate(
+        _id,
+        // {
+        //   $set: req.body,
+        // },
+        {
+          company_name: company_name,
+          address: address,
+          city: city,
+          state: state,
+          // logo: img,
+          country: country,
+          phoneNo: phoneNo,
+          emailId: email,
+          ownerName: ownerName,
+          company_description:company_description,
           regNo: regNo,
           panNo: panNo,
           discription: discription,
