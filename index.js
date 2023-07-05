@@ -59,50 +59,70 @@ dotenv.config({ path: "./config.env" });
 // const certificate = fs.readFileSync('certificates/cert.pem', 'utf8');
 // const credentials = {key: privateKey, cert: certificate};
 
-const PORT1 = process.env.PORT || 5000;
-const PORT2 = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
+// const PORT2 = process.env.PORT || 5001;
 const CONNECTION_URL = process.env.DATABASE;
 
-const app1 = express();
-const app2 = express();
+// const app1 = express();
+// const app2 = express();
+
+const app = express();
+
 // const server1 = http.createServer(app1);
 // const server2 = http.createServer(app2);
 // const wsServer = new WebSocket.Server({ port: PORT2 });
-app1.use(express.json({limit: "100mb", extended: true }));
-app2.use(express.json({limit: "100mb", extended: true }));
-app1.use(express.urlencoded({limit: "100mb", extended: true }));
-app2.use(express.urlencoded({limit: "100mb", extended: true }));
+// app1.use(express.json({limit: "100mb", extended: true }));
+// app2.use(express.json({limit: "100mb", extended: true }));
+// app1.use(express.urlencoded({limit: "100mb", extended: true }));
+// app2.use(express.urlencoded({limit: "100mb", extended: true }));
+
+app.use(express.json({limit: "100mb", extended: true }));
+app.use(express.urlencoded({limit: "100mb", extended: true }));
 
 
-app1.use(
+// app1.use(
+//   cors({
+//     // origin: "https://my-machine-store-0l73.onrender.com",
+//     origin : "http://localhost:3000",
+//     // origin : "http://mymachinestore.com",
+//     //  origin: "https://mymachinestore.com/",
+//     // credentials: true,
+//     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
+//   })
+// );
+app.use(
   cors({
-    // origin: "https://my-machine-store-0l73.onrender.com",
-    // origin : "http://localhost:3000",
-    // origin : "http://mymachinestore.com",
-     origin: "https://mymachinestore.com/",
-    // credentials: true,
-    exposedHeaders: ["Set-Cookie", "Date", "ETag"],
-  })
-);
-app2.use(
-  cors({
-      //  origin: "http://localhost:3001",
+       origin: ["http://localhost:3001","http://localhost:3000"],
     // origin: "https://my-machine-store-dashboard.onrender.com",
     // origin: "https://mymachinestore.com/admin",
-       origin: "http://15.207.31.23:3001",
+      //  origin: "http://15.207.31.23:3001",
     credentials: true,
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
 );
 
-
+// app.use(
+//   cors({
+//     // origin: "https://my-machine-store-0l73.onrender.com",
+//     origin :[ "http://localhost:3000","http://localhost:3001"],
+//     // origin : "http://mymachinestore.com",
+//     //  origin: "https://mymachinestore.com/",
+//     // credentials: true,
+//     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
+//   })
+// )
  
 
 
-app1.use("/api", routes);
+// app1.use("/api", routes);
 // app1.use("/product", producetroutes")
 // app1.use("/blog", blogroutes")
-app2.use("/enquiry", routes);
+// app2.use("/enquiry", routes);
+app.use("/enquiry", routes);
+app.use("/", routes);
+// app.use("/blog", blogroutes);
+// app.use("/product", producetroutes);
+
 // const storage=multer.diskStorage({
 //   destination:function(req,file,cb){
 //     cb(null,"uploads")
@@ -112,8 +132,8 @@ app2.use("/enquiry", routes);
 //  }
 // })
 // let upload=multer({storage:storage})
-app2.use(bodyParser.json({limit: '100mb'}));
-app2.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:50000}));
+// app2.use(bodyParser.json({limit: '100mb'}));
+// app2.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:50000}));
 
 // if (process.env.NODE_ENV === 'production') {
 //   app2.use(express.static(path.resolve(__dirname, 'build')));
@@ -124,11 +144,15 @@ app2.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:5
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // app2.use("/uploads", express.static(__dirname + "/public"));
-app2.use("/uploads", express.static("uploads"));
-app2.use("/logo", express.static("logo"));
+// app2.use("/uploads", express.static("uploads"));
+// app2.use("/logo", express.static("logo"));
+app.use("/uploads", express.static("uploads"));
+app.use("/logo", express.static("logo"));
+
 // app2.use(multer().any())
-app1.use(cookieParser());
-app2.use(cookieParser());
+// app1.use(cookieParser());
+// app2.use(cookieParser());
+app.use(cookieParser());
 
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
@@ -143,17 +167,20 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    if (app1) {
-      app1.listen(PORT1, () => {
-        console.log(`server running on ${PORT1}`);
-      });
+    // if (app1) {
+    //   app1.listen(PORT1, () => {
+    //     console.log(`server running on ${PORT1}`);
+    //   });
+    // }
+    // if (app2) {
+    //   app2.listen(PORT2, () => {
+    //     console.log(`server running on ${PORT2}`);
+    //   });
+    // }
+    app.listen(PORT, () => {
+      console.log(`server running on ${PORT}`);
     }
-    if (app2) {
-      app2.listen(PORT2, () => {
-        console.log(`server running on ${PORT2}`);
-      });
-    }
-
+    );
   })
   .catch((error) => {
     console.log(error.message);
@@ -161,10 +188,14 @@ mongoose
 
 
 
-  app1.get("/api", (req, res) => {
-    return res.send("Welcome to MyMachine Store Server");
-  });
-  app2.get("/", (req, res) => {
+  // app1.get("/api", (req, res) => {
+  //   return res.send("Welcome to MyMachine Store Server");
+  // });
+  // app2.get("/", (req, res) => {
+  //   return res.send("Welcome to MyMachine Store Server");
+  // });
+  
+  app.get("/", (req, res) => {
     return res.send("Welcome to MyMachine Store Server");
   });
 
@@ -233,7 +264,33 @@ mongoose
   //   }
   // });
 
-  app1.get("/api/search/:key", async (req, res) => {
+  // app1.get("/api/search/:key", async (req, res) => {
+  //   const searchTerm = req.query.searchTerm;
+  //   const regex = new RegExp(searchTerm, 'i');
+  //   try {
+  //     // const searchQuery = req.query.q.toLowerCase();
+  //     const searchdetail = await addProduct.find({
+  //       "$or" :[
+  //         {product_name : {  $regex: regex }},
+  //         {brand : { $regex: regex }},
+  //         {category :{ $regex: regex }}
+  //       ]
+  //     },{_id:1, product_name:1,modalNum:1,brand:1,category:1,subCategory:1,image:1,shortDiscription:1});
+  //     return res.status(200).json( searchdetail );
+  //   } catch (error) {
+  //     console.log("error----->", error.message);
+  //     return res.status(500).json("someting went wrong......");
+  //   }
+  // });
+
+  // app2.delete("/delete/:id", (req, res) => {
+  //   console.log(req.params);
+  //   addProduct.findByIdAndDelete({ _id: req.params.id })
+  //     .then((doc) => console.log(doc))
+  //     .catch((err) => console.log(err));
+  // });
+
+  app.get("/api/search/:key", async (req, res) => {
     const searchTerm = req.query.searchTerm;
     const regex = new RegExp(searchTerm, 'i');
     try {
@@ -252,12 +309,14 @@ mongoose
     }
   });
 
-  app2.delete("/delete/:id", (req, res) => {
+  app.delete("/delete/:id", (req, res) => {
     console.log(req.params);
     addProduct.findByIdAndDelete({ _id: req.params.id })
       .then((doc) => console.log(doc))
       .catch((err) => console.log(err));
   });
+
+
   // app2.put("/update/:id", (req, res, next) => {
   //   console.log(req.params);
   // try{
