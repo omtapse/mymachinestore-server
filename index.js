@@ -90,11 +90,7 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 // );
 app.use(
   cors({
-    origin: [
-      "http://localhost:3001",
-      "http://localhost:3000",
-      "http://194.31.53.145/",
-    ],
+    origin: "http://194.31.53.145/",
     // origin: "https://my-machine-store-dashboard.onrender.com",
     // origin: "https://mymachinestore.com/admin",
     //  origin: "http://15.207.31.23:3001",
