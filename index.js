@@ -95,7 +95,7 @@ app.use(
     //   "http://localhost:3000",
     //   "http://194.31.53.145",
     // ],
-    origin: "https://194.31.53.145",
+    origin: ["https://194.31.53.145","https://194.31.53.145:3000"],
     // origin: "https://mymachinestore.com/admin",
     //  origin: "http://15.207.31.23:3001",
     credentials: true,
