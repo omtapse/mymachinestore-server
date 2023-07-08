@@ -164,27 +164,7 @@ app.use(cookieParser());
 
 mongoose.set("strictQuery", true);
 
-mongoose
-  .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    // if (app1) {
-    //   app1.listen(PORT1, () => {
-    //     console.log(`server running on ${PORT1}`);
-    //   });
-    // }
-    // if (app2) {
-    //   app2.listen(PORT2, () => {
-    //     console.log(`server running on ${PORT2}`);
-    //   });
-    // }
-    app.listen(PORT, () => {
-      console.log(`server running on ${PORT}`);
-    }
-    );
-  })
-  .catch((error) => {
-    console.log(error.message);
-  });
+
 
 
 
@@ -341,4 +321,28 @@ mongoose
   //     return res.status(500).json("someting went wrong......");
   //   }
   // });
+
+  app.get('/healthCheck',(req,res)=>res.send('ok'))
   
+
+  mongoose
+  .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    // if (app1) {
+    //   app1.listen(PORT1, () => {
+    //     console.log(`server running on ${PORT1}`);
+    //   });
+    // }
+    // if (app2) {
+    //   app2.listen(PORT2, () => {
+    //     console.log(`server running on ${PORT2}`);
+    //   });
+    // }
+    app.listen(PORT, () => {
+      console.log(`server running on ${PORT}`);
+    }
+    );
+  })
+  .catch((error) => {
+    console.log(error.message);
+  });
