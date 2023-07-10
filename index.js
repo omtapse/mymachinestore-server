@@ -89,7 +89,7 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 //   })
 // );
 app.use(cors({
-  origin:["http://localhost:3000","http://mymachinestore.com", /\.mymachinestore\.com$/]
+  origin:"*"
 }
 ));
 // app.use(cors());
