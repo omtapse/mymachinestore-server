@@ -16,7 +16,7 @@ import {
 } from "../controllers/enquiry/tardeEnquiry.js";
 import { AddCompanyDetail, addCompany_Sign_up,  deleteCompany, approvedMail, CompanyDetail, superAdminCompanyList, superAdmin_Addcompany_Login, AddCompanyVendorDetail } from "../controllers/mail/approvedMail.js";
 import { mail, sign_in_mail } from "../controllers/mail/mail.js";
-import { enquiry, getUserEnquiry } from "../controllers/user/enquiry.js";
+import { changeStatusById, enquiry, getUserEnquiry } from "../controllers/user/enquiry.js";
 import {
   addVendoProduct,
   editVendoProduct,
@@ -215,7 +215,7 @@ routes.get("/vendorProductList", vendorproductList)
 
 
 routes.get("/productList", vendorAuthrisation, productList);
-
+  
 // routes.put("/editProduct:id", updateProductById);
 // routes.put("/:id", updateProductById)
 routes.get("/productList", productList);
@@ -313,3 +313,7 @@ routes.delete("/deleteApplication/:id", deleteApplicationById)
 routes.put("/updateApplication/:id",upload.single("application_image"), updateApplicationById);
 // * for client applications
 routes.get("/getapplication", clientApplicationFetch)
+
+
+// for changing status of vendor by super admin
+routes.put("/changeStatus/:id", changeStatusById);

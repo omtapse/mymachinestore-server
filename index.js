@@ -88,10 +88,7 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 //     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
 //   })
 // );
-app.use(cors({
-  origin:"*"
-}
-));
+app.use(cors({origin:"*"}));
 // app.use(cors());
 
 // app.use(

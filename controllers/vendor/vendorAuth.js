@@ -13,6 +13,9 @@ export const vendorAuth = async (req, res) => {
     if (!existinguser) {
       return res.status(404).json({ message: "User don't Exist." });
     }
+    if(existinguser.status === "Deactive"){
+      return res.status(402).json({ message: "User is disabled." });
+    } 
     // if (!userDetail) {
     //   return res.json({ message: "Add data" });
     // }

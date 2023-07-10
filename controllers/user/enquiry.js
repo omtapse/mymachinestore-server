@@ -1,3 +1,4 @@
+import adminDetail from "../../modale/adminDetail.js";
 import userEnquiry from "../../modale/userEnquiry.js";
 export const enquiry = async (req, res) => {
   console.log("requser===>", req.body);
@@ -36,3 +37,20 @@ export const getUserEnquiry = async (req, res) => {
     return res.status(500).json("someting went wrong......");
   }
 };
+
+
+
+export const changeStatusById = async (req, res) => {
+  try{
+    const _id = req.params.id;
+    const status = req.body.status;
+    let responce = await adminDetail.findByIdAndUpdate({_id}, {status:status});
+    console.log(responce)
+
+    return res.status(200).json({result:responce});
+
+  } catch(error){
+    console.log("error----->", error.message);
+    return res.status(500).json("someting went wrong......");
+  }
+}

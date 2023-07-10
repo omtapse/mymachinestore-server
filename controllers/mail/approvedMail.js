@@ -228,7 +228,7 @@ export const superAdminCompanyList = async (req, res) => {
       .find({}, { company_name: 1, ownerName: 1, managerName:1, emailId: 1,logo:1, city:1, phoneNo:1, status:1 })
       .limit(pageSize)
       .skip(pageSize * page);
-    console.log("newUser2===>", newUser);
+    // console.log("newUser2===>", newUser);
     return res
       .status(200)
       .json({ result: newUser, totalPages: Math.ceil(total / pageSize) });
@@ -283,9 +283,12 @@ export const AddCompanyDetail = async (req, res) => {
   const _id = req.body.companyId;
   console.log("id===>", _id);
   // let img = req.file.path;
-  const salt = bcrypt.genSaltSync(10);
-
-  const hashPassword = await bcrypt.hash(password, salt);
+  const data = await adminDetail.find({_id})
+  let hashedPassword = null
+  if(password!==data[0].password){
+    const salt =await bcrypt.genSalt(10);
+    hashedPassword = await bcrypt.hash(password, salt);
+  }
 
   try {
     const uData = await adminDetail
@@ -313,15 +316,14 @@ export const AddCompanyDetail = async (req, res) => {
           customer:customer,
           employees: employees,
           engineer:engineer,
-          password: hashPassword,
+          password: hashedPassword!=null ? hashedPassword: password,
           userName: userName,
           managerName: managerName,
           status: status,
         }
-      )
-      .clone();
+      );
     if (req.file) {
-      await adminDetail.findByIdAndUpdate(_id, { logo: req.file.path }).clone();
+      await adminDetail.findByIdAndUpdate(_id, { logo: req.file.path });
     }
     if (uData) {
       return res.status(200).json("Updated successfully");
