@@ -59,6 +59,7 @@ import { add_slider, clientSliderFetch, deleteSliderById, getSliderById, superAd
 import { addAdminapplication, clientApplicationFetch, deleteApplicationById, getApplicationById, superAdminApplicationList, updateApplicationById } from "../controllers/application/application_controller.js";
 // import { addVendorProduct, vendorproductList } from "../controllers/vendor/vendor_product.js";
 import { vendorproductList } from "../controllers/vendor/product.js";
+import { resetPasswordOfVendor, resetPasswordOfVendorWithToken } from "../controllers/vendor/venderResetPassword.js";
 dotenv.config({ path: "./config.env" });
 const require = createRequire(import.meta.url);
 // const { S3Client } = require('@aws-sdk/client-s3');
@@ -196,6 +197,9 @@ routes.post("/vendorAdminLogIN", vendorAuth);
 routes.post("/addProduct", upload.single("image"), addVendoProduct);
 routes.post("/vendoraddProduct", upload.single("image"), addVendoProduct);
 routes.get("/vendorProductList", vendorproductList)
+routes.post ("/generateResetPasswordLink", resetPasswordOfVendor)
+routes.post ("/resetPassword", resetPasswordOfVendorWithToken)
+
 
 // routes.post("/addProduct", upload().single("image"), async (req, res) => {
 //   await addProduct.create({ image: req.file.location });
