@@ -40,7 +40,7 @@ export const resetPasswordOfVendor = async (req, res) => {
     });
 
     const mailOptions = {
-      to: "omtapse01@gmail.com",
+      to: `${vendor.emailId}`,
       from: "shivani06.dongarwar@gmail.com",
       subject: "MyMachineStore.com",
       text: "Hello, this is the body of the email",
