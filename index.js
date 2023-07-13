@@ -158,7 +158,7 @@ mongoose.set("strictQuery", true);
 // });
 
 app.get("/", (req, res) => {
-  return res.send("Welcome to MyMachine Store Server");
+  return res.send("Welcome to MyMachine Store Server test");
 });
 
 // app1.get("/api/fetch", async (req, res) => {
