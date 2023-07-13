@@ -162,7 +162,7 @@ mongoose
 
 
   app1.get("/api", (req, res) => {
-    return res.send("Welcome to MyMachine Store Server");
+    return res.send("Welcome to MyMachine Store Server Test");
   });
   app2.get("/", (req, res) => {
     return res.send("Welcome to MyMachine Store Server");
