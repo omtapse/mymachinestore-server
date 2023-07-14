@@ -26,13 +26,13 @@ export const resetPasswordOfVendor = async (req, res) => {
       token: hash,
       createdAt: Date.now(),
     }).save();
-
+    console.log("here", vendor.emailId)
     const link = `${process.env.CLIENT_URL}/vendor/reset-password/${vendor._id}/${resetToken}`;
     const transport = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "shivani06.dongarwar@gmail.com",
-        pass: "ydubhqkvqsrvwpkq",
+        user: "mail.mymachinestore@gmail.com",
+        pass: "pxhfsojosxbtjfox",
       },
       tls: {
         rejectUnauthorized: false,
@@ -40,8 +40,9 @@ export const resetPasswordOfVendor = async (req, res) => {
     });
 
     const mailOptions = {
-      to: `${vendor.emailId}`,
-      from: "shivani06.dongarwar@gmail.com",
+      // to: `${vendor.emailId}`,
+      to: `omtapse01@gmail.com`,
+      from: "mail.mymachinestore@gmail.com",
       subject: "MyMachineStore.com",
       text: "Hello, this is the body of the email",
       html: `
@@ -50,6 +51,7 @@ export const resetPasswordOfVendor = async (req, res) => {
         <a href=${link}>Login Form</a>
       `,
     };
+    console.log(mailOptions)
 
     await transport.sendMail(mailOptions);
     return res.status(200).json("Message send successful");
