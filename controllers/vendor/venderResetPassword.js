@@ -40,8 +40,8 @@ export const resetPasswordOfVendor = async (req, res) => {
     });
 
     const mailOptions = {
-      // to: `${vendor.emailId}`,
-      to: `omtapse01@gmail.com`,
+      to: `${vendor.emailId}`,
+      // to: `omtapse01@gmail.com`,
       from: "mail.mymachinestore@gmail.com",
       subject: "MyMachineStore.com",
       text: "Hello, this is the body of the email",
