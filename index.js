@@ -88,7 +88,23 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 //     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
 //   })
 // );
-app.use(cors({origin:"*"}));
+// app.use(cors({origin:"*"}));
+const allowedOrigins = [
+  "mymachinestore.in",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin) || origin=="null") {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 // app.use(cors());
 
 // app.use(
